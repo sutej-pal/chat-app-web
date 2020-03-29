@@ -4,9 +4,21 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
+    <Chat/>
     <router-view/>
   </div>
 </template>
+
+<script>
+import Chat from './components/Chat.vue'
+
+export default {
+  name: 'app',
+  components: {
+    Chat
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
