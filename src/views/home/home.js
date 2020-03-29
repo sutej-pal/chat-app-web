@@ -29,15 +29,15 @@ export default Vue.extend({
     }
   },
   methods: {
-    selectContact: function (cardId: number) {
-      _.each(this.$refs, (card: any) => {
+    selectContact: function (cardId) {
+      _.each(this.$refs, (card) => {
         card[0].classList.remove('active');
       });
-      const card: any = this.$refs['card' + cardId];
+      const card = this.$refs['card' + cardId];
       card[0].classList.add('active');
     }
   },
-  mounted(): void {
+  mounted() {
     console.log('hi')
   }
 })

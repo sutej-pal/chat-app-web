@@ -1,3 +1,3 @@
 <template src="./home.html"/>
-<script src="./home.ts"/>
+<script src="./home.js"/>
 <style scoped src="./home.scss" lang="scss"/>
