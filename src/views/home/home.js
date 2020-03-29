@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import _ from 'underscore'
+import io from 'socket.io-client'
 
 export default Vue.extend({
   data() {
@@ -25,7 +26,11 @@ export default Vue.extend({
           id: 5,
           name: 'Vikrant'
         }
-      ]
+      ],
+      user: '',
+      message: '',
+      messages: [],
+      socket: io('localhost:3000')
     }
   },
   methods: {
@@ -38,6 +43,10 @@ export default Vue.extend({
     }
   },
   mounted() {
+    this.socket.on('MESSAGE', (data) => {
+      this.messages = [...this.messages, data]
+      // you can also do this.messages.push(data)
+    })
     console.log('hi')
   }
 })

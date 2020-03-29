@@ -1,2 +1,2 @@
-<template><div>sutej</div></template>
+<template src="./sign-up.html"/>
 <script src="./sign-up.js"/>
