@@ -1,0 +1,89 @@
+$red: #ad0099;
+.dashboard {
+  color: $red;
+  .search-bar {
+
+  }
+  .contact-list {
+    .contact {
+      cursor: pointer;
+      img {
+        height: 50px;
+      }
+      &.active {
+        background-color: #c4c4c4;
+        border-radius: 3px;
+      }
+    }
+  }
+  .chat-controller {
+    .fa-paper-plane {
+      font-size: 25px;
+      color: #000000;
+      cursor: pointer;
+    }
+  }
+  /* Cool scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 5px;
+    display: block
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #e4eaf5;
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(196, 201, 211)
+  }
+  /** This is the css of the input **/
+  #w-input-container {
+    min-height: 20px;
+    box-sizing: border-box;
+    padding: 9px 18px 11px;
+    margin: 5px 10px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 21px;
+  }
+
+  .w-input-text-group {
+    position: relative;
+  }
+
+  .w-placeholder {
+    color: #a0a0a0;
+    top: 0;
+    pointer-events: none;
+    user-select: none;
+    position: absolute;
+    opacity: 0;
+    transition: 0.2s padding ease-in-out;
+  }
+
+  #w-input-text {
+    overflow-x: hidden;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    z-index: 1;
+    max-height: 100px;
+    min-height: 20px;
+    padding: 0 0 0 2px;
+    outline: 0;
+    transition: 0.2s padding ease-in-out;
+  }
+
+  #w-input-text:empty + .w-placeholder {
+    opacity: 1;
+  }
+
+  #w-input-text:focus + .w-placeholder {
+    padding: 0 6px 0px;
+  }
+
+  #w-input-text:focus {
+    padding: 0 6px 0px;
+  }
+
+}
