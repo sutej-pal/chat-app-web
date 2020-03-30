@@ -2,6 +2,7 @@ import Vue from 'vue'
 import _ from 'underscore'
 import io from 'socket.io-client'
 import HttpService from '../../services/http.service.ts'
+import UtilityService from '../../services/utility.service.ts'
 
 export default Vue.extend({
   data() {
@@ -25,11 +26,12 @@ export default Vue.extend({
       console.log(this.activeUser);
       console.log(this.$refs.message);
       const data = {
-        user: this.activeUser.id,
+        senderId: UtilityService.getUserData().id,
+        receiverId: this.activeUser.id,
         message: this.$refs.message.innerHTML
       }
       this.socket.emit('SEND_MESSAGE', data)
-      // this.$refs.message.innerHTML = ''
+      this.$refs.message.innerHTML = ''
     },
     async getUsers() {
       HttpService.get('users-list', true).then(response => {
@@ -37,16 +39,27 @@ export default Vue.extend({
         this.users = response.data.data;
         setTimeout(() => {
           console.log('cards', this.$refs['contact-list'].children[0].classList.add('active'))
+          this.activeUser = response.data.data[0];
+          this.getChatHistory();
         }, 500)
       });
+    },
+    getChatHistory () {
+      const data = {
+        senderId: UtilityService.getUserData().id,
+        receiverId: this.activeUser.id
+      };
+      HttpService.post('chat-history', data)
+        .then(res => {
+          this.messages = res.data.data;
+          console.log('messages', this.messages);
+        })
     }
   },
   async mounted() {
     await this.getUsers();
     this.socket.on('MESSAGE', (data) => {
-      this.messages = [...this.messages, data]
-      // you can also do this.messages.push(data)
-      console.log('hi', this.messages);
+      this.getChatHistory();
     });
   }
 })

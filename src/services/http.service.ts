@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3000/api/';
+const baseUrl = 'http://192.168.42.49:3000/api/';
 
 export default class HttpService {
   static async get(endPoint: string, authorization = true) {

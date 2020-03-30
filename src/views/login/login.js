@@ -5,7 +5,7 @@ export default Vue.extend({
   data() {
     return {
       formData: {
-        name: '',
+        email: '',
         password: ''
       }
     }

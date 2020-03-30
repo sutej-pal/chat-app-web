@@ -19,8 +19,10 @@
         </div>
         <div class="w-3/4 bg-orange-500 relative h-full">
             <div class="chat-message-container">
-                <div class="messages" v-for="(msg, index) in messages" :key="index">
-                    <p><span class="font-weight-bold">{{ msg.user }}: </span>{{ msg.message }}</p>
+                <div class="message"
+                     :class="{'sender': message.senderId === activeUser.id, 'receiver': message.senderId !== activeUser.id}"
+                     v-for="(message, index) in messages" :key="index">
+                    <p><span class="font-weight-bold"></span>{{ message.message }}</p>
                 </div>
             </div>
                 <div class="chat-controller absolute bottom-0 flex items-center w-full px-3">
