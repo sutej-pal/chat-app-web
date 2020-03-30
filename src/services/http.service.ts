@@ -3,10 +3,51 @@ import axios from 'axios'
 const baseUrl = 'http://localhost:3000/api/';
 
 export default class HttpService {
-  static async get(endPoint: string) {
-    const url = baseUrl + endPoint;
+  static async get(endPoint: string, authorization = true) {
+    const request = {
+      url: baseUrl + endPoint,
+      headers: {},
+      method: 'get'
+    };
+    if (authorization) {
+      request.headers = HttpService.addAuthenticationToken();
+    }
+    return HttpService.hitApi(request);
+  }
+
+  static async post(endPoint: string, data = {}, authorization = true) {
+    const request = {
+      url: baseUrl + endPoint,
+      data,
+      method: "post",
+      headers: {}
+    };
+    if (authorization) {
+      request.headers = HttpService.addAuthenticationToken();
+    }
+    return HttpService.hitApi(request);
+  }
+
+  private static addAuthenticationToken() {
+    const headers = {
+      Authorization: ''
+    };
+    const temp = localStorage.getItem('userData');
+    let userData = {
+      token: ''
+    };
+    if (typeof temp === "string") {
+      userData = JSON.parse(temp);
+    }
+    if (userData && userData.token) {
+      headers.Authorization = 'Bearer ' + userData.token
+    }
+    return headers
+  }
+
+  private static async hitApi(request = {}) {
     try {
-      return axios.get(url)
+      return axios(request)
         .then((res) => {
           return res
         }).catch((err) => {
@@ -16,22 +57,4 @@ export default class HttpService {
       console.log('Error', e)
     }
   }
-
-  static async post(endPoint: string, data = {}) {
-    const url = baseUrl + endPoint;
-    try {
-      return axios.post(url, data)
-        .then((res) => {
-          return res
-        }).catch((err) => {
-          console.log('err', err)
-        })
-    } catch (e) {
-      console.log('Error', e)
-    }
-  }
-
-  // private async hitApi() {
-  //
-  // }
 }

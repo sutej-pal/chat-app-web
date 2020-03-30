@@ -32,9 +32,13 @@ export default Vue.extend({
       // this.$refs.message.innerHTML = ''
     },
     async getUsers() {
-      const response = await HttpService.get('users-list');
-      console.log('users', response.data)
-      this.users = response.data.data;
+      HttpService.get('users-list', true).then(response => {
+        console.log('users', response.data)
+        this.users = response.data.data;
+        setTimeout(() => {
+          console.log('cards', this.$refs['contact-list'].children[0].classList.add('active'))
+        }, 500)
+      });
     }
   },
   async mounted() {
