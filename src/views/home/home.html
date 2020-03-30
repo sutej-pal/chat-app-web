@@ -1,34 +1,38 @@
 <div class="container mx-auto">
     <div class="dashboard flex h-screen">
-        <div class="side-bar-container sm:1-/2 md:w-1/4 bg-green-200">
+        <div class="side-bar-container sm:hide md:w-1/4 bg-green-200">
             <div class="search-bar relative text-xs my-3 px-4">
                 <input type="text" placeholder="Search or Start new chat"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
                 <span class="fa fa-times absolute"></span>
             </div>
-            <div class="contact-list">
-                <div class="contact flex items-center p-2" v-for="contact in contacts"
-                     @click="selectContact(contact.id)" :ref="'card' + contact.id">
+            <div class="contact-list" ref="contact-list">
+                <div class="contact flex items-center p-2" v-for="user in users"
+                     @click="selectContact(user)" :ref="'card' + user.id">
                     <img src="../../assets/images/default-user.png" alt="" class="rounded-full">
                     <div class="p-1 pl-2 text-left">
-                        <div>Name</div>
+                        <div>{{user.name}}</div>
                         <div class="last-message">Last message</div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="w-3/4 bg-orange-500">
-            <div class="chat-message-container relative h-full">
+        <div class="w-3/4 bg-orange-500 relative h-full">
+            <div class="chat-message-container">
+                <div class="messages" v-for="(msg, index) in messages" :key="index">
+                    <p><span class="font-weight-bold">{{ msg.user }}: </span>{{ msg.message }}</p>
+                </div>
+            </div>
                 <div class="chat-controller absolute bottom-0 flex items-center w-full px-3">
                     <div id="w-input-container" class="w-full">
                         <div class="w-input-text-group text-left">
-                            <div id="w-input-text" contenteditable></div>
+                            <div id="w-input-text" contenteditable ref="message"></div>
                             <div class="w-placeholder">
                                 Type a message
                             </div>
                         </div>
                     </div>
-                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                    <i class="fa fa-paper-plane" @click="sendMessage()" aria-hidden="true"></i>
                 </div>
             </div>
         </div>
