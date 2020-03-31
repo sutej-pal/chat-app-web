@@ -6,7 +6,7 @@
                 <div class="flex heading">
                     <div class="heading-avatar">
                         <div class="heading-avatar-icon">
-                            <img src="http://shurl.esy.es/y">
+                            <img src="../../assets/images/default-user.png">
                         </div>
                     </div>
                     <div class="heading-dot  pull-right">
@@ -34,7 +34,7 @@
                     <div class="flex sideBar-body" v-for="user in users">
                         <div class="sideBar-avatar">
                             <div class="avatar-icon">
-                                <img src="http://shurl.esy.es/y">
+                                <img src="../../assets/images/default-user.png">
                             </div>
                         </div>
                         <div class="sideBar-main">
@@ -51,21 +51,21 @@
                 </div>
             </div>
         </div>
-        <div class="conversation w-3/4 ">
-            <!-- Heading -->
-            <div class="heading absolute top-0">
-                <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
-                    <div class="heading-avatar-icon">
-                        <img src="http://shurl.esy.es/y">
+        <div class="conversation w-3/4">
+            <div class="flex heading justify-between sticky top-0 w-full">
+                <div class="flex">
+                    <div class="heading-avatar">
+                        <div class="heading-avatar-icon">
+                            <img src="../../assets/images/default-user.png">
+                        </div>
+                    </div>
+                    <div class="heading-name">
+                        <a class="heading-name-meta">Ankit Jain</a>
+                        <span class="heading-online">Online</span>
                     </div>
                 </div>
-                <div class="col-sm-8 col-xs-7 heading-name">
-                    <a class="heading-name-meta">Ankit Jain
-                    </a>
-                    <span class="heading-online">Online</span>
-                </div>
-                <div class="col-sm-1 col-xs-1  heading-dot pull-right">
-                    <i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
+                <div class="heading-dot">
+                    <i class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></i>
                 </div>
             </div>
 
@@ -78,7 +78,7 @@
                         <div class="message-text" v-html="message.message"></div>
                         <span class="message-time">Sun</span>
                     </div>
-                </div>k
+                </div>
             </div>
             <div class="absolute bottom-0 flex reply">
                 <div class="reply-emojis">
