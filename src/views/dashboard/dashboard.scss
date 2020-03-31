@@ -26,6 +26,7 @@
   margin: 0 !important;
   height: 100%;
 }
+
 .side-one {
   padding: 0;
   margin: 0;
@@ -89,12 +90,14 @@
   color: #000;
   display: block;
 }
+
 .heading-online {
   display: none;
   padding: 0 5px;
   font-size: 12px;
   color: #93918f;
 }
+
 .heading-compose {
   padding: 0;
 }
@@ -219,6 +222,7 @@
   position: relative;
   left: -100%;
 }
+
 .newMessage-heading {
   padding: 10px 16px 10px 15px !important;
   margin: 0 !important;
@@ -243,6 +247,7 @@
   font-weight: 700;
   padding: 10px 5px !important;
 }
+
 .newMessage-back {
   text-align: center;
   vertical-align: baseline;
@@ -250,6 +255,7 @@
   display: block;
   cursor: pointer;
 }
+
 .newMessage-back i {
   margin: auto !important;
 }
@@ -283,38 +289,43 @@
   height: calc(100% - 160px);
 }
 
-/*Conversation*/
-
 .conversation {
   border-left: 1px solid rgba(0, 0, 0, .08);
   overflow-y: auto;
 }
 
-.conversation-body {
-  .message-main-sender, .message-main-receiver {
-    padding: 5px 10px;
-    border-radius: 5px;
-    width: fit-content;
-    max-width: 60%;
-    margin: 7px 10px 10px auto;
-    background-color: rgba(66, 185, 131, 0.4);
+.conversation-container {
+  margin-top: 70px;
+  margin-bottom: 70px;
+
+  .conversation-body {
     .sender, .receiver {
+      padding: 5px 10px;
+      border-radius: 5px;
+      width: fit-content;
+      max-width: 60%;
+      margin: 7px 10px 10px auto;
+      background-color: rgba(66, 185, 131, 0.4);
       text-align: right;
+
       .message-text {
         color: rgba(0, 0, 0, 0.71);
         font-size: 14px;
       }
+
       .message-time {
         color: gray;
         font-size: 12px;
       }
     }
-  }
-  .message-main-receiver {
-    margin: 7px auto 10px 10px;
-    background-color: rgba(83, 83, 83, 0.4);
+
+    .receiver {
+      margin: 7px auto 10px 10px;
+      background-color: rgba(83, 83, 83, 0.4);
+    }
   }
 }
+
 /*Reply*/
 
 .reply {
