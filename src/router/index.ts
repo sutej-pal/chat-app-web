@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/home/home.vue'
+import Dashboard from '../views/dashboard/dashboard.vue'
 import SignUp from '../views/sign-up/sign-up.vue'
 import Login from '../views/login/login.vue'
 import NotFound from '../views/not-found/not-found.vue'
@@ -22,6 +23,11 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard
   },
   {
     path: '/about',

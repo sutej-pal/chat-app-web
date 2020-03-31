@@ -1,6 +1,6 @@
 <div class="container mx-auto">
     <div class="dashboard flex h-screen">
-        <div class="side-bar-container sm:hide md:w-1/4 bg-green-200">
+        <div class="side-bar-container sm:hide md:w-1/4 bg-green-100">
             <div class="search-bar relative text-xs my-3 px-4">
                 <input type="text" placeholder="Search or Start new chat"
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none">
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-3/4 bg-orange-500 relative h-full">
+        <div class="w-3/4 bg-gray-200 relative h-full">
             <div class="chat-message-container">
                 <div class="message"
                      :class="{'sender': message.senderId === activeUser.id, 'receiver': message.senderId !== activeUser.id}"
@@ -25,17 +25,16 @@
                     <p><span class="font-weight-bold"></span>{{ message.message }}</p>
                 </div>
             </div>
-                <div class="chat-controller absolute bottom-0 flex items-center w-full px-3">
-                    <div id="w-input-container" class="w-full">
-                        <div class="w-input-text-group text-left">
-                            <div id="w-input-text" contenteditable ref="message"></div>
-                            <div class="w-placeholder">
-                                Type a message
-                            </div>
+            <div class="chat-controller absolute bottom-0 flex items-center w-full px-3">
+                <div id="w-input-container" class="w-full">
+                    <div class="w-input-text-group text-left">
+                        <div id="w-input-text" contenteditable ref="message"></div>
+                        <div class="w-placeholder">
+                            Type a message
                         </div>
                     </div>
-                    <i class="fa fa-paper-plane" @click="sendMessage()" aria-hidden="true"></i>
                 </div>
+                <i class="fa fa-paper-plane" @click="sendMessage()" aria-hidden="true"></i>
             </div>
         </div>
     </div>

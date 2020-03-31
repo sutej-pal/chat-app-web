@@ -9,8 +9,10 @@ export default Vue.extend({
     return {
       users: [],
       messages: [],
-      socket: io(process.env.VUE_APP_base_url),
-      activeUser: {}
+      socket: io('localhost:3000'),
+      activeUser: {
+        id: '5e8205a393e6402bd0b3d2cc'
+      }
     }
   },
   methods: {
@@ -21,7 +23,6 @@ export default Vue.extend({
       });
       this.$refs['card' + contact.id][0].classList.add('active');
       this.activeUser = contact
-      this.getChatHistory();
     },
     sendMessage() {
       console.log(this.activeUser);
@@ -39,8 +40,8 @@ export default Vue.extend({
         console.log('users', response.data)
         this.users = response.data.data;
         setTimeout(() => {
-          console.log('cards', this.$refs['contact-list'].children[0].classList.add('active'))
-          this.activeUser = response.data.data[0];
+          // console.log('cards', this.$refs['contact-list'].children[0].classList.add('active'))
+          // this.activeUser = response.data.data[0];
           this.getChatHistory();
         }, 500)
       });
@@ -62,7 +63,5 @@ export default Vue.extend({
     this.socket.on('MESSAGE', (data) => {
       this.getChatHistory();
     });
-    console.log('VUE_APP_ENV_VARIABLE', process.env.VUE_APP_ENV_VARIABLE);
-    console.log('VUE_APP_ENV_VARIABLE', process.env.VUE_APP_base_url);
   }
 })

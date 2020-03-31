@@ -1,0 +1,113 @@
+<div class="container app">
+    <div class="flex app-one">
+        <div class="side w-1/4 bg-green-200">
+            <div class="side-one">
+                <!-- Heading -->
+                <div class="flex heading">
+                    <div class="heading-avatar">
+                        <div class="heading-avatar-icon">
+                            <img src="http://shurl.esy.es/y">
+                        </div>
+                    </div>
+                    <div class="heading-dot  pull-right">
+                        <i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
+                    </div>
+                    <div class="heading-compose  pull-right">
+                        <i class="fa fa-comments fa-2x  pull-right" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <!-- Heading End -->
+
+                <!-- SearchBox -->
+                <div class="w-full searchBox">
+                    <div class="searchBox-inner">
+                        <div class="form-group has-feedback">
+                            <input id="searchText" type="text" class="w-full" name="searchText"
+                                   placeholder="Search">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Box End -->
+                <!-- sideBar -->
+                <div class="row sideBar">
+                    <div class="flex sideBar-body" v-for="user in users">
+                        <div class="sideBar-avatar">
+                            <div class="avatar-icon">
+                                <img src="http://shurl.esy.es/y">
+                            </div>
+                        </div>
+                        <div class="sideBar-main">
+                            <div class="flex">
+                                <div class="sideBar-name">
+                                    <span class="name-meta">{{user.name}}</span>
+                                </div>
+                                <div class="pull-right sideBar-time">
+                                    <span class="time-meta pull-right">18:18</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="conversation w-3/4 ">
+            <!-- Heading -->
+            <div class="heading">
+                <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
+                    <div class="heading-avatar-icon">
+                        <img src="http://shurl.esy.es/y">
+                    </div>
+                </div>
+                <div class="col-sm-8 col-xs-7 heading-name">
+                    <a class="heading-name-meta">Ankit Jain
+                    </a>
+                    <span class="heading-online">Online</span>
+                </div>
+                <div class="col-sm-1 col-xs-1  heading-dot pull-right">
+                    <i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
+                </div>
+            </div>
+
+            <div class="conversation-container">
+
+                <div class="conversation-body" v-for="(message, index) in messages" :key="index">
+                    <div :class="{'message-main-sender': message.senderId === activeUser.id, 'message-main-receiver': message.senderId !== activeUser.id}">
+                        <div :class="{'sender': message.senderId === activeUser.id, 'receiver': message.senderId !== activeUser.id}">
+                            <div class="message-text" v-html="message.message"></div>
+                            <span class="message-time">Sun</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-body">
+                    <div class="message-main-sender">
+                        <div class="sender">
+                            <div class="message-text">Thanks n I know its awesome...!</div>
+                            <span class="message-time pull-right">Sun</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--            &lt;!&ndash; Message Box End &ndash;&gt;-->
+
+        <!--            &lt;!&ndash; Reply Box &ndash;&gt;-->
+        <!--            <div class="absolute bottom-0 flex reply">-->
+        <!--&lt;!&ndash;                <div class="reply-emojis">&ndash;&gt;-->
+        <!--&lt;!&ndash;                    <i class="fa fa-smile-o fa-2x"></i>&ndash;&gt;-->
+        <!--&lt;!&ndash;                </div>&ndash;&gt;-->
+        <!--                <div class="reply-main">-->
+        <!--                    <textarea class="form-control" rows="1" id="comment" v-model=""></textarea>-->
+        <!--                </div>-->
+        <!--&lt;!&ndash;                <div class="reply-recording">&ndash;&gt;-->
+        <!--&lt;!&ndash;                    <i class="fa fa-microphone fa-2x" aria-hidden="true"></i>&ndash;&gt;-->
+        <!--&lt;!&ndash;                </div>&ndash;&gt;-->
+        <!--                <div class="reply-send">-->
+        <!--                    <i class="fa fa-send fa-2x" aria-hidden="true" @click="sendMessage()"></i>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            &lt;!&ndash; Reply Box End &ndash;&gt;-->
+        <!--        </div>-->
+    </div>
+</div>

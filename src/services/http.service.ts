@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-const baseUrl = 'http://192.168.42.49:3000/api/';
+const apiUrl = process.env.VUE_APP_api_url;
 
 export default class HttpService {
   static async get(endPoint: string, authorization = true) {
     const request = {
-      url: baseUrl + endPoint,
+      url: apiUrl + endPoint,
       headers: {},
       method: 'get'
     };
@@ -17,7 +17,7 @@ export default class HttpService {
 
   static async post(endPoint: string, data = {}, authorization = true) {
     const request = {
-      url: baseUrl + endPoint,
+      url: apiUrl + endPoint,
       data,
       method: "post",
       headers: {}
