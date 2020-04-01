@@ -12,11 +12,12 @@ export default Vue.extend({
       socket: io('localhost:3000'),
       activeUser: {
         id: '5e8205a393e6402bd0b3d2cc'
-      }
+      },
+      sender: {}
     }
   },
   methods: {
-    selectContact (contact) {
+    selectReceiver (contact) {
       console.log(this.$refs['contact-list'])
       _.each(this.$refs['contact-list'].children, (card) => {
         card.classList.remove('active');
@@ -28,7 +29,7 @@ export default Vue.extend({
       console.log(this.activeUser);
       console.log(this.$refs.message);
       const data = {
-        senderId: UtilityService.getUserData().id,
+        senderId: this.sender.id,
         receiverId: this.activeUser.id,
         message: this.$refs.message.innerHTML
       }
@@ -59,6 +60,7 @@ export default Vue.extend({
     }
   },
   async mounted() {
+    this.sender = UtilityService.getUserData();
     await this.getUsers();
     this.socket.on('MESSAGE', (data) => {
       this.getChatHistory();

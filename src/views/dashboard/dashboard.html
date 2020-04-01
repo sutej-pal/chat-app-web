@@ -31,7 +31,7 @@
                 <!-- Search Box End -->
                 <!-- sideBar -->
                 <div class="row sideBar">
-                    <div class="flex sideBar-body" v-for="user in users">
+                    <div class="flex sideBar-body" v-for="user in users" @click="selectReceiver(user)">
                         <div class="sideBar-avatar">
                             <div class="avatar-icon">
                                 <img src="../../assets/images/default-user.png">
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <div class="heading-name">
-                        <a class="heading-name-meta">Ankit Jain</a>
+                        <a class="heading-name-meta">{{sender.name}}</a>
                         <span class="heading-online">Online</span>
                     </div>
                 </div>
