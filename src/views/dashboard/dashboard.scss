@@ -20,38 +20,9 @@
   padding: 0 !important;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .06), 0 2px 5px 0 rgba(0, 0, 0, .2);
 }
-
-.side {
-  padding: 0 !important;
-  margin: 0 !important;
-  height: 100%;
+.sidebar-container {
+  min-width: 220px;
 }
-
-.side-one {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 1;
-  position: relative;
-  display: block;
-  top: 0;
-}
-
-.side-two {
-  padding: 0 !important;
-  margin: 0 !important;
-  height: 100%;
-  width: 100%;
-  z-index: 2;
-  position: relative;
-  top: -100%;
-  left: -100%;
-  -webkit-transition: left 0.3s ease;
-  transition: left 0.3s ease;
-
-}
-
 
 .heading {
   padding: 10px 16px 10px 15px;
@@ -121,51 +92,31 @@
   cursor: pointer;
 }
 
-.searchBox {
-  padding: 0 !important;
-  margin: 0 !important;
-  height: 60px;
-  width: 100%;
-}
-
 .searchBox-inner {
-  height: 100%;
-  width: 100%;
-  padding: 10px !important;
-  background-color: #fbfbfb;
+
+  input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+  }
+   span.fa-times {
+     right: 3px;
+     margin-top: 4%;
+     font-size: 12px;
+     cursor: pointer;
+   }
 }
 
-
-/*#searchBox-inner input {
-  box-shadow: none;
-}*/
-
-.searchBox-inner input:focus {
-  outline: none;
-  border: none;
-  box-shadow: none;
-}
-
-.sideBar {
-  padding: 0 !important;
-  margin: 0 !important;
-  background-color: #fff;
-  overflow-y: auto;
-  border: 1px solid #f7f7f7;
-  height: calc(100% - 120px);
-}
-
-.sideBar-body {
+.sidebar-card {
   position: relative;
   padding: 10px !important;
   border-bottom: 1px solid #f7f7f7;
   height: 72px;
   margin: 0 !important;
   cursor: pointer;
-}
+  &.active {
 
-.sideBar-body:hover {
-  background-color: #f2f2f2;
+  }
 }
 
 .sideBar-avatar {
@@ -294,8 +245,7 @@
   overflow-y: auto;
 }
 
-.conversation-container {
-  overflow: auto;
+.conversation-container, .sidebar {
   &::-webkit-scrollbar-track {
     background-color: #F5F5F5;
   }
@@ -306,7 +256,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.51);
+    background-color: rgba(0, 0, 0, 0.3);
   }
 
   .conversation-body {
@@ -316,23 +266,11 @@
       width: fit-content;
       max-width: 60%;
       margin: 7px 10px 10px auto;
-      background-color: rgba(66, 185, 131, 0.4);
       text-align: right;
-
-      .message-text {
-        color: rgba(0, 0, 0, 0.71);
-        font-size: 14px;
-      }
-
-      .message-time {
-        color: gray;
-        font-size: 12px;
-      }
     }
 
     .receiver {
       margin: 7px auto 10px 10px;
-      background-color: rgba(83, 83, 83, 0.4);
     }
   }
 }
@@ -370,14 +308,9 @@
   cursor: pointer;
 }
 
-.reply-send {
-  padding: 5px !important;
-}
-
 .reply-send i {
   text-align: center;
   padding: 5px !important;
-  color: #93918f;
   cursor: pointer;
 }
 
@@ -439,10 +372,7 @@
     color: #fff;
     cursor: pointer;
   }
-  .sideBar {
-    height: calc(100% - 130px);
-  }
-  .sideBar-body {
+  .sidebar-card {
     height: 80px;
   }
   .sideBar-avatar {
@@ -511,13 +441,6 @@
   }
   .reply-recording i {
     padding: 5px 0 !important;
-    font-size: 1.8em !important;
-  }
-  .reply-send {
-    padding: 5px 0 !important;
-  }
-  .reply-send i {
-    padding: 5px 2px 5px 0 !important;
     font-size: 1.8em !important;
   }
 }

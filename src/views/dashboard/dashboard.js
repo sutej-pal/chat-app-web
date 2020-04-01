@@ -7,42 +7,36 @@ import UtilityService from '../../services/utility.service.ts'
 export default Vue.extend({
   data() {
     return {
+      searchText: '',
       users: [],
+      message: '',
       messages: [],
       socket: io('localhost:3000'),
-      activeUser: {
-        id: '5e8205a393e6402bd0b3d2cc'
-      },
+      receiver: {},
       sender: {}
     }
   },
   methods: {
-    selectReceiver (contact) {
-      console.log(this.$refs['contact-list'])
-      _.each(this.$refs['contact-list'].children, (card) => {
-        card.classList.remove('active');
-      });
-      this.$refs['card' + contact.id][0].classList.add('active');
-      this.activeUser = contact
+    selectReceiver (receiver) {
+      this.receiver = receiver
+      this.getChatHistory();
     },
     sendMessage() {
-      console.log(this.activeUser);
-      console.log(this.$refs.message);
       const data = {
         senderId: this.sender.id,
-        receiverId: this.activeUser.id,
-        message: this.$refs.message.innerHTML
+        receiverId: this.receiver.id,
+        message: this.message
       }
+      console.log('data', data);
       this.socket.emit('SEND_MESSAGE', data)
-      this.$refs.message.innerHTML = ''
+      this.message = ''
     },
     async getUsers() {
       HttpService.get('users-list', true).then(response => {
         console.log('users', response.data)
         this.users = response.data.data;
         setTimeout(() => {
-          // console.log('cards', this.$refs['contact-list'].children[0].classList.add('active'))
-          // this.activeUser = response.data.data[0];
+          this.receiver = response.data.data[0];
           this.getChatHistory();
         }, 500)
       });
@@ -50,13 +44,21 @@ export default Vue.extend({
     getChatHistory () {
       const data = {
         senderId: UtilityService.getUserData().id,
-        receiverId: this.activeUser.id
+        receiverId: this.receiver.id
       };
       HttpService.post('chat-history', data)
         .then(res => {
           this.messages = res.data.data;
           console.log('messages', this.messages);
+          this.scrollConversationToBottom();
         })
+    },
+    scrollConversationToBottom() {
+      setTimeout(() => {
+        const element = this.$refs['conversation-container']
+        console.log('element', element);
+        element.scrollTop = element.scrollHeight;
+      }, 500);
     }
   },
   async mounted() {
