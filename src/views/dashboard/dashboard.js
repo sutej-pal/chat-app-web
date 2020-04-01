@@ -12,7 +12,7 @@ export default Vue.extend({
       users: [],
       message: '',
       messages: [],
-      socket: io('localhost:3000'),
+      socket: io(process.env.VUE_APP_base_url),
       receiver: {},
       sender: {}
     }
@@ -22,11 +22,16 @@ export default Vue.extend({
       this.receiver = receiver
       this.getChatHistory();
     },
-    sendMessage() {
+    sendMessage(event) {
+      if (event && event.shiftKey) {
+        // console.log(event.target.clientHeight);
+        // event.target.style.height = event.target.clientHeight + 25 + 'px'
+        return
+      }
       const data = {
         senderId: this.sender.id,
         receiverId: this.receiver.id,
-        message: this.message
+        message: this.message.trim()
       }
       console.log('data', data);
       this.socket.emit('SEND_MESSAGE', data)
@@ -58,16 +63,27 @@ export default Vue.extend({
       setTimeout(() => {
         const element = this.$refs['conversation-container']
         element.scrollTop = element.scrollHeight;
-      }, 500);
+      }, 50);
     },
     getMessageTime(creationTime) {
       return moment(creationTime).format('hh:mm a')
+    },
+    textAreaAdjust(event) {
+      event.target.style.height = "1px";
+      event.target.style.height = (25 + event.target.scrollHeight) + "px";
+    }
+  },
+  computed: {
+    filteredUsers () {
+      return this.users.filter((user) => {
+        return user.name.toLowerCase().includes(this.searchText.toLowerCase())
+      })
     }
   },
   async mounted() {
     this.sender = UtilityService.getUserData();
     await this.getUsers();
-    this.socket.on('MESSAGE', (data) => {
+    this.socket.on('MESSAGE', () => {
       this.getChatHistory();
     });
   }

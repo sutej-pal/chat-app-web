@@ -24,7 +24,7 @@
                 </div>
                 <div class="sidebar bg-white h-full overflow-auto">
                     <div class="flex sidebar-card hover:bg-gray-100" :class="{'bg-gray-200': receiver.id === user.id}"
-                         v-for="user in users" @click="selectReceiver(user)">
+                         v-for="user in filteredUsers" @click="selectReceiver(user)">
                         <div class="sideBar-avatar">
                             <div class="avatar-icon">
                                 <img src="../../assets/images/default-user.png">
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="heading-name">
-                        <a class="heading-name-meta">{{sender.name}}</a>
+                        <a class="heading-name-meta">{{receiver.name}}</a>
                         <span class="heading-online">Online</span>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                      'sender bg-green-200': message.senderId !== receiver.id,
                      'receiver bg-gray-300': message.senderId === receiver.id
                     }" v-for="(message, index) in messages" :key="index">
-                        <div class="text-sm text-gray-800" v-html="message.message"></div>
+                        <div class="text-sm text-gray-800" style="white-space: pre-wrap" v-html="message.message"></div>
                         <span class="text-xs text-gray-600">{{getMessageTime(message.createdAt)}}</span>
                     </div>
                     <div v-if="messages.length === 0" class="py-5 text-center text-lg">
@@ -76,12 +76,12 @@
                     </div>
                 </div>
             </div>
-            <div class="absolute bottom-0 flex reply sticky w-full justify-around text-gray-500">
+            <div class="absolute bottom-0 flex reply sticky w-full justify-around items-center text-gray-500">
                 <div class="reply-emojis">
                     <i class="fa fa-smile-o fa-2x"></i>
                 </div>
                 <div class="reply-main w-full text-gray-700">
-                    <textarea name="" id="" cols="30" rows="10" v-model='message' @keypress.enter="sendMessage()"></textarea>
+                    <textarea name="" placeholder="Type a message" v-model='message' @keyup.enter="sendMessage"></textarea>
                 </div>
 <!--                <div class="reply-recording">-->
 <!--                    <i class="fa fa-microphone fa-2x" aria-hidden="true"></i>-->

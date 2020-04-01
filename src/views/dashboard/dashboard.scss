@@ -245,7 +245,7 @@
   overflow-y: auto;
 }
 
-.conversation-container, .sidebar {
+.conversation-container, .sidebar, .reply-main textarea {
   &::-webkit-scrollbar-track {
     background-color: #F5F5F5;
   }
@@ -278,7 +278,7 @@
 /*Reply*/
 
 .reply {
-  height: 60px;
+  max-height: 100px;
   width: 100%;
   background-color: #f5f1ee;
   padding: 10px 5px 10px 5px !important;
@@ -314,28 +314,20 @@
   cursor: pointer;
 }
 
-.reply-main {
-  padding: 2px 5px !important;
-}
-
 .reply-main textarea {
   width: 100%;
   resize: none;
-  overflow: hidden;
   padding: 5px !important;
   outline: none;
   border: none;
-  text-indent: 5px;
   box-shadow: none;
   height: 100%;
-  font-size: 16px;
-}
-
-.reply-main textarea:focus {
-  outline: none;
-  border: none;
-  text-indent: 5px;
-  box-shadow: none;
+  font-size: 14px;
+  &:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+  }
 }
 
 @media screen and (max-width: 700px) {
