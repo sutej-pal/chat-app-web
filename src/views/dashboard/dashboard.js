@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import _ from 'underscore'
 import io from 'socket.io-client'
+import moment from 'moment'
 import HttpService from '../../services/http.service.ts'
 import UtilityService from '../../services/utility.service.ts'
 
@@ -56,9 +57,11 @@ export default Vue.extend({
     scrollConversationToBottom() {
       setTimeout(() => {
         const element = this.$refs['conversation-container']
-        console.log('element', element);
         element.scrollTop = element.scrollHeight;
       }, 500);
+    },
+    getMessageTime(creationTime) {
+      return moment(creationTime).format('hh:mm a')
     }
   },
   async mounted() {
