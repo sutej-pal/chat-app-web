@@ -5,6 +5,7 @@ import Dashboard from '../views/dashboard/dashboard.vue'
 import SignUp from '../views/sign-up/sign-up.vue'
 import Login from '../views/login/login.vue'
 import NotFound from '../views/not-found/not-found.vue'
+import VideoChat from '../views/video-chat/video-chat.vue'
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,11 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard
+  },
+  {
+    path: '/video-chat',
+    name: 'VideoChat',
+    component: VideoChat
   },
   {
     path: '/about',
