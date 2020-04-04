@@ -4,4 +4,4 @@ export default {
       document.title = to.meta.title || 'Chat App'
     }
   }
-}
+};
