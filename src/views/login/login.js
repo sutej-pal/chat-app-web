@@ -18,8 +18,5 @@ export default Vue.extend({
         this.$router.push({ path: '/dashboard' });
       })
     }
-  },
-  mounted () {
-    console.log('hi', process.env)
   }
 })

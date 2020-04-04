@@ -69,7 +69,7 @@
                      'receiver bg-gray-300': message.senderId === receiver.id
                     }" v-for="(message, index) in messages" :key="index">
                         <div class="text-sm text-gray-800" style="white-space: pre-wrap" v-html="message.message"></div>
-                        <span class="text-xs text-gray-600">{{getMessageTime(message.createdAt)}}</span>
+                        <div class="text-right text-xs text-gray-600">{{getMessageTime(message.createdAt)}}</div>
                     </div>
                     <div v-if="messages.length === 0" class="py-5 text-center text-lg">
                         Start Conversation ...

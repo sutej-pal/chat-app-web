@@ -4,6 +4,11 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import '@/assets/css/tailwind.css'
+import Toasted from 'vue-toasted';
+
+Vue.use(Toasted,
+  {position: "top-right", duration: 2000, keepOnHover: true}
+  );
 
 Vue.config.productionTip = false;
 

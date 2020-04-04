@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Vue from 'vue'
 
 const apiUrl = process.env.VUE_APP_api_url;
 
@@ -51,7 +52,10 @@ export default class HttpService {
         .then((res) => {
           return res
         }).catch((err) => {
-          console.log('err', err)
+          console.log('err', err.response.data);
+          if (err && err.response.data && err.response.data.message) {
+            Vue.toasted.error(err.response.data.message, {duration: 5000});
+          }
         })
     } catch (e) {
       console.log('Error', e)

@@ -5,6 +5,7 @@ import Dashboard from '../views/dashboard/dashboard.vue'
 import SignUp from '../views/sign-up/sign-up.vue'
 import Login from '../views/login/login.vue'
 import NotFound from '../views/not-found/not-found.vue'
+import UserVerification from '../views/verify-user/verify-user.vue'
 
 Vue.use(VueRouter);
 
@@ -31,6 +32,11 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard
+  },
+  {
+    path: '/verify-user',
+    name: 'UserVerification',
+    component: UserVerification
   },
   {
     path: '/about',

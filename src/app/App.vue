@@ -12,7 +12,6 @@
     font-family: 'Roboto', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: url("../assets/images/bg-pattern.png");
   }
 
   #nav {
