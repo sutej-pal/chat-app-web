@@ -12,7 +12,10 @@ const routes = [
   {
     path: '/',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {
+      title: 'Login'
+    }
   },
   {
     path: '/sign-up',
@@ -43,12 +46,12 @@ const routes = [
     name: 'NotFound',
     component: NotFound
   }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
 export default router
