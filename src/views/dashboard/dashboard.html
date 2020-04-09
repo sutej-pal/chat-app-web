@@ -63,7 +63,7 @@
                         <i class="fa fa-ellipsis-v fa-2x" aria-hidden="true"
                            @click="$refs.userSettings.classList.toggle('hidden')"></i>
                         <div class="absolute bg-white right-0 hidden shadow user-settings"
-                             @mouseout="$refs.userSettings.classList.toggle('hidden')" ref="userSettings">
+                             @mouseleave="$refs.userSettings.classList.toggle('hidden')" ref="userSettings">
                             <ul>
                                 <router-link class="block hover:bg-gray-200 px-3 py-2" to="/settings">Settings</router-link>
                                 <router-link class="block hover:bg-gray-200 px-3 py-2" to="/profile">Profile</router-link>
