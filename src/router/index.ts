@@ -6,6 +6,7 @@ import SignUp from '../views/sign-up/sign-up.vue'
 import Login from '../views/login/login.vue'
 import NotFound from '../views/not-found/not-found.vue'
 import UserVerification from '../views/verify-user/verify-user.vue'
+import UtilityService from "@/services/utility.service";
 
 Vue.use(VueRouter);
 
@@ -31,7 +32,10 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: Dashboard
+    component: Dashboard,
+    meta: {
+      auth: true
+    }
   },
   {
     path: '/verify-user',
@@ -58,6 +62,14 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.auth && !UtilityService.getUserData()) {
+    router.push({path: '/'})
+  } else {
+    next();
+  }
 });
 
 export default router

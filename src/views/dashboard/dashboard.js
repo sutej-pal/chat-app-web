@@ -52,7 +52,7 @@ export default Vue.extend({
         senderId: UtilityService.getUserData().id,
         receiverId: this.receiver.id
       };
-      HttpService.post('chat-history', data)
+      HttpService.post('chat-history-1', data)
         .then(res => {
           this.messages = res.data.data;
           console.log('messages', this.messages);
@@ -71,6 +71,10 @@ export default Vue.extend({
     textAreaAdjust(event) {
       event.target.style.height = "1px";
       event.target.style.height = (25 + event.target.scrollHeight) + "px";
+    },
+    async logOut() {
+      localStorage.clear();
+      await this.$router.push({path: '/'});
     }
   },
   computed: {
