@@ -4,8 +4,12 @@ import io from 'socket.io-client'
 import moment from 'moment'
 import HttpService from '../../services/http.service.ts'
 import UtilityService from '../../services/utility.service.ts'
+import UserList from '../../components/UserList'
 
 export default Vue.extend({
+  components: {
+    UserList
+  },
   data() {
     return {
       searchText: '',
@@ -84,13 +88,6 @@ export default Vue.extend({
     async logOut() {
       localStorage.clear();
       await this.$router.push({path: '/'});
-    }
-  },
-  computed: {
-    filteredUsers () {
-      return this.users.filter((user) => {
-        return user.name.toLowerCase().includes(this.searchText.toLowerCase())
-      })
     }
   },
   async mounted() {

@@ -23,27 +23,8 @@
                             <span class="fa fa-times absolute" @click="searchText = ''"></span>
                         </div>
                     </div>
-                    <div class="sidebar bg-white h-full overflow-auto">
-                        <div class="flex sidebar-card hover:bg-gray-100"
-                             :class="{'bg-gray-200': receiver.id === user.id}"
-                             v-for="user in filteredUsers" @click="selectReceiver(user)">
-                            <div class="sideBar-avatar">
-                                <div class="avatar-icon">
-                                    <img src="../../assets/images/default-user.png">
-                                </div>
-                            </div>
-                            <div class="sideBar-main">
-                                <div class="flex">
-                                    <div class="sideBar-name">
-                                        <span class="name-meta">{{user.name}}</span>
-                                    </div>
-                                    <div class="pull-right sideBar-time">
-                                        <span class="time-meta pull-right">18:18</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <UserList :users="users" :receiver="receiver" :searchText="searchText"
+                              @newReceiver="selectReceiver"/>
                 </div>
             </div>
             <div class="conversation flex flex-col w-3/4">
