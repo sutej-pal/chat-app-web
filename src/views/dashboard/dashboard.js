@@ -35,10 +35,19 @@ export default Vue.extend({
       }
       console.log('data', data);
       this.socket.emit('SEND_MESSAGE', data)
+      this.setReceiverOnTopOfList();
       this.message = ''
     },
+    setReceiverOnTopOfList() {
+      const temp = [...this.users];
+      const index = temp.indexOf(this.receiver);
+      console.log('index', index);
+      temp.splice(index, 1);
+      temp.splice(0, 0, this.receiver);
+      this.users = temp;
+    },
     async getUsers() {
-      HttpService.get('users-list', true).then(response => {
+      HttpService.get('recent-users', true).then(response => {
         console.log('users', response.data)
         this.users = response.data.data;
         setTimeout(() => {
