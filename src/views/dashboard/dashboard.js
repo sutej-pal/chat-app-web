@@ -4,11 +4,13 @@ import io from 'socket.io-client'
 import moment from 'moment'
 import HttpService from '../../services/http.service.ts'
 import UtilityService from '../../services/utility.service.ts'
-import UserList from '../../components/user-list/user-list.vue'
+import RecentUserList from '../../components/recent-users-list/recent-users-list.vue'
+import AllUserList from '../../components/all-users-list/all-users-list.vue'
 
 export default Vue.extend({
   components: {
-    'user-list': UserList
+    'recent-user-list': RecentUserList,
+    'all-user-list': AllUserList
   },
   data() {
     return {
@@ -23,11 +25,12 @@ export default Vue.extend({
   },
   methods: {
     selectReceiver (receiver) {
+      this.searchText = '';
       this.receiver = receiver
       this.getChatHistory();
       // this.getReceiverStatus();
     },
-    sendMessage(event) {
+    async sendMessage(event) {
       if (event && event.shiftKey) {
         // console.log(event.target.clientHeight);
         // event.target.style.height = event.target.clientHeight + 25 + 'px'
@@ -40,18 +43,22 @@ export default Vue.extend({
       }
       console.log('data', data);
       this.socket.emit('SEND_MESSAGE', data)
-      this.setReceiverOnTopOfList();
+      await this.setReceiverOnTopOfList();
       this.message = ''
     },
-    setReceiverOnTopOfList() {
+    async setReceiverOnTopOfList() {
       const temp = [...this.users];
       const index = temp.indexOf(this.receiver);
+      if (index === -1) {
+        await this.getRecentUsers();
+        return
+      }
       console.log('index', index);
       temp.splice(index, 1);
       temp.splice(0, 0, this.receiver);
       this.users = temp;
     },
-    async getUsers() {
+    async getRecentUsers() {
       HttpService.get('recent-users', true).then(response => {
         console.log('users', response.data)
         this.users = response.data.data;
@@ -100,7 +107,7 @@ export default Vue.extend({
   },
   async mounted() {
     this.sender = UtilityService.getUserData();
-    await this.getUsers();
+    await this.getRecentUsers();
     this.socket.emit('update-user-status', this.sender)
     this.socket.on('MESSAGE', () => {
       this.getChatHistory();
