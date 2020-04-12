@@ -63,7 +63,7 @@
                      'sender bg-green-200': message.senderId !== receiver.id,
                      'receiver bg-gray-300': message.senderId === receiver.id
                     }" v-for="(message, index) in messages" :key="index">
-                            <div class="text-sm text-gray-800" style="white-space: pre-wrap"
+                            <div class="text-left text-sm text-gray-800" style="white-space: pre-wrap"
                                  v-html="message.message"></div>
                             <div class="text-right text-xs text-gray-600">{{getMessageTime(message.createdAt)}}</div>
                         </div>
