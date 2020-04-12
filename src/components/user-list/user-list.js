@@ -8,7 +8,8 @@ export default Vue.component('user-list', {
       this.$emit('newReceiver', receiver)
     },
     getLastUpdateTime (time) {
-      console.log('time', moment(time).diff(moment(), 'days'))
+      console.log('time', moment(time).format());
+      console.log('time', moment(time).diff(moment(), 'days'));
     }
   },
   computed: {

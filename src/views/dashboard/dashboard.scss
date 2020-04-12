@@ -70,13 +70,6 @@
   display: block;
 }
 
-.heading-online {
-  display: none;
-  padding: 0 5px;
-  font-size: 12px;
-  color: #93918f;
-}
-
 .heading-compose {
   padding: 0;
 }
@@ -372,9 +365,6 @@
   .heading-dot i {
     color: #fff;
     cursor: pointer;
-  }
-  .sidebar-card {
-    height: 80px;
   }
   .sideBar-avatar {
     text-align: left;

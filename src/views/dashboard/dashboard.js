@@ -4,11 +4,11 @@ import io from 'socket.io-client'
 import moment from 'moment'
 import HttpService from '../../services/http.service.ts'
 import UtilityService from '../../services/utility.service.ts'
-import UserList from '../../components/UserList'
+import UserList from '../../components/user-list/user-list.vue'
 
 export default Vue.extend({
   components: {
-    UserList
+    'user-list': UserList
   },
   data() {
     return {
@@ -25,6 +25,7 @@ export default Vue.extend({
     selectReceiver (receiver) {
       this.receiver = receiver
       this.getChatHistory();
+      // this.getReceiverStatus();
     },
     sendMessage(event) {
       if (event && event.shiftKey) {
@@ -88,13 +89,37 @@ export default Vue.extend({
     async logOut() {
       localStorage.clear();
       await this.$router.push({path: '/'});
+    },
+    getReceiverStatus () {
+      HttpService.get('user-status')
+        .then(res => {
+          console.log('data', res);
+          this.receiver = res.data.data[0];
+        })
     }
   },
   async mounted() {
     this.sender = UtilityService.getUserData();
     await this.getUsers();
+    this.socket.emit('update-user-status', this.sender)
     this.socket.on('MESSAGE', () => {
       this.getChatHistory();
+    });
+    this.socket.on('offline-user', (offlineUserData) => {
+      console.log('offline-user', offlineUserData);
+      _.each(this.users, user => {
+        if (offlineUserData._id === user.id) {
+          user.isActive = offlineUserData.isActive
+        }
+      })
+    });
+    this.socket.on('online-user', (onlineUserData) => {
+      console.log('online-user', onlineUserData);
+      _.each(this.users, user => {
+        if (onlineUserData.id === user.id) {
+          user.isActive = true
+        }
+      })
     });
   }
 })

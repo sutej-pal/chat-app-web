@@ -1,0 +1,21 @@
+<div class="sidebar bg-white h-full overflow-auto">
+    <div class="flex sidebar-card hover:bg-gray-100"
+         :class="{'bg-gray-200': receiver.id === user.id}"
+         v-for="(user, index) in filteredUsers" @click="selectReceiver(user)" :key="index">
+        <div class="sideBar-avatar">
+            <div class="avatar-icon">
+                <img src="../../assets/images/default-user.png">
+            </div>
+        </div>
+        <div class="sideBar-main">
+            <div class="flex">
+                <div class="sideBar-name">
+                    <span class="name-meta">{{user.name}}</span>
+                </div>
+                <div class="pull-right sideBar-time">
+                    <span class="time-meta pull-right">{{getLastUpdateTime(user.updatedAt)}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

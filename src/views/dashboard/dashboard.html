@@ -23,7 +23,7 @@
                             <span class="fa fa-times absolute" @click="searchText = ''"></span>
                         </div>
                     </div>
-                    <UserList :users="users" :receiver="receiver" :searchText="searchText"
+                    <user-list :users="users" :receiver="receiver" :searchText="searchText"
                               @newReceiver="selectReceiver"/>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="heading-name">
                             <a class="heading-name-meta">{{receiver.name}}</a>
-                            <span class="heading-online">Online</span>
+                            <span class="heading-online" v-if="receiver.isActive">Online</span>
                         </div>
                     </div>
                     <div class="heading-dot relative">
