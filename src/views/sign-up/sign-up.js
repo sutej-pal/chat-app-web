@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import HttpService from '../../services/http.service'
 
-export default {
+export default Vue.extend({
   data () {
     return {
       formData: {
@@ -20,9 +20,9 @@ export default {
         if (res && res.data && res.data.message === 'Registration Successful!') {
           this.$toasted.success('Verification Mail Sent please check MailBox.', {duration: 5000})
         }
-        console.log('res', res)
+        // console.log('res', res)
         this.hitSigningApi = false;
       })
     }
   }
-}
+});
