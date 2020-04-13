@@ -15,7 +15,7 @@ export default Vue.extend({
       HttpService.post('login', this.formData).then(res => {
         console.log('result', res)
         localStorage.setItem('userData', JSON.stringify(res.data.data));
-        this.$router.push({ path: '/dashboard' });
+        this.$router.push({ path: '/home' });
       })
     }
   }

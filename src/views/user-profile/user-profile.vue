@@ -1,8 +1,4 @@
-<template>
-    <div>
-      user profile
-    </div>
-</template>
+<template src="./user-profile.html"/>
 
 <script>
   export default {
