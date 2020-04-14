@@ -1,11 +1,3 @@
 <template src="./user-profile.html"/>
-
-<script>
-  export default {
-    name: 'user-profile'
-  }
-</script>
-
-<style scoped>
-
-</style>
+<script src="./user-profile.js"/>
+<style scoped src="./user-profile.scss" lang="scss"/>
