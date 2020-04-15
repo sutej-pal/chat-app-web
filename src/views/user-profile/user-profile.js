@@ -4,6 +4,7 @@ import UtilityService from '../../services/utility.service'
 export default {
   data () {
     return {
+      userId: '',
       formData: {
         profileImage: ''
       },
@@ -16,7 +17,7 @@ export default {
   },
   methods: {
     getUserData () {
-      HttpService.post('user-profile', { userId: '5e8df3227614ad37304affab' }).then(res => {
+      HttpService.post('user-profile', this.userId).then(res => {
         console.log('result', res)
         this.userData = res.data.data
       })
@@ -39,7 +40,7 @@ export default {
       // console.log(this.profileImage);
     },
     updateUserProfile() {
-      HttpService.post('update-user-profile', {bio: this.userData.bio})
+      HttpService.post('update-user-profile', {id: this.userData.id, bio: this.userData.bio})
         .then(res => {
           console.log('response', res);
           this.isFormEditable = !this.isFormEditable;
@@ -48,6 +49,7 @@ export default {
   },
   computed: {},
   mounted () {
-    this.getUserData()
+    this.userId = this.$route.params;
+    this.getUserData();
   }
 }

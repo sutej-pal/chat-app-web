@@ -29,14 +29,14 @@
     <div class="conversation flex flex-col w-3/4">
         <div class="flex heading justify-between sticky top-0 w-full">
             <div class="flex">
-                <router-link to="/profile" class="heading-avatar">
+                <router-link :to="{name: 'Profile', params: {userId: receiver.id}}" class="heading-avatar">
                     <div class="heading-avatar-icon">
                         <img :src="getImageUrl(receiver.profileImage)">
                     </div>
                 </router-link>
                 <div class="heading-name">
                     <a class="heading-name-meta">{{receiver.name}}</a>
-                    <span class="heading-online" v-if="receiver.isActive">Online</span>
+                    <span class="heading-online text-xs" v-if="receiver.isActive">Online</span>
                 </div>
             </div>
             <div class="heading-dot relative">
