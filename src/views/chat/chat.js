@@ -103,6 +103,9 @@ export default Vue.extend({
           console.log('data', res);
           this.receiver = res.data.data[0];
         })
+    },
+    getImageUrl (url) {
+      return UtilityService.getImageUrl(url)
     }
   },
   async mounted() {

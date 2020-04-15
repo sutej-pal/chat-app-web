@@ -27,7 +27,9 @@
   }
   .user-details {
     .edit-button {
-     cursor: pointer;
+      a {
+        cursor: pointer;
+      }
     }
     .user-bio {
       @include scrollbar

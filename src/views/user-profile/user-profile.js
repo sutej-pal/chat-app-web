@@ -1,4 +1,5 @@
 import HttpService from '../../services/http.service'
+import UtilityService from '../../services/utility.service'
 
 export default {
   data () {
@@ -6,10 +7,10 @@ export default {
       formData: {
         profileImage: ''
       },
-      userData: {
-        profileImage: ''
+      userData: {},
+      profileImage: {
+        file: ''
       },
-      uploadedImage: '',
       isFormEditable: false
     }
   },
@@ -24,15 +25,18 @@ export default {
       console.log(process.env.VUE_APP_base_url + url)
       return process.env.VUE_APP_base_url + url
     },
-    onImageUpload (type, event) {
-      if (event.target.files && event.target.files[0]) {
-        const reader = new FileReader()
-        reader.onload = (e) => {
-          console.log('sdsdsd', e);
-          this.userData.profileImage = e.target.result;
-          reader.readAsDataURL(event.target.files[0])
-        }
-      }
+    async onImageUpload (type, e) {
+      const image = await UtilityService.onImageUpload(e);
+      console.log('image', image);
+      this.profileImage.file = e.target.files[0];
+      this.profileImage.object = URL.createObjectURL(this.profileImage.file)
+      const formData = new FormData();
+      formData.append('file', this.profileImage.file)
+      HttpService.post('update-profile-image', formData)
+        .then(res => {
+          console.log('res', res);
+        })
+      // console.log(this.profileImage);
     },
     updateUserProfile() {
       HttpService.post('update-user-profile', {bio: this.userData.bio})

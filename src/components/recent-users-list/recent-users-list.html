@@ -4,7 +4,7 @@
          v-for="(user, index) in filteredUsers" @click="selectReceiver(user)" :key="index">
         <div class="sideBar-avatar">
             <div class="avatar-icon">
-                <img src="../../assets/images/default-user.png">
+                <img :src="getImageUrl(user.profileImage)">
             </div>
         </div>
         <div class="sideBar-main">

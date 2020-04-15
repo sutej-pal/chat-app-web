@@ -31,7 +31,7 @@
             <div class="flex">
                 <router-link to="/profile" class="heading-avatar">
                     <div class="heading-avatar-icon">
-                        <img src="../../assets/images/default-user.png">
+                        <img :src="getImageUrl(receiver.profileImage)">
                     </div>
                 </router-link>
                 <div class="heading-name">
