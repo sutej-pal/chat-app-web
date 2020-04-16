@@ -1,10 +1,28 @@
 <div class="flex chat-main h-full">
     <div class="sidebar-container w-1/4 bg-green-200 h-full">
         <div class="flex flex-col h-full">
-            <div class="flex ww-full heading">
-                <div class="heading-avatar">
-                    <div class="heading-avatar-icon">
-                        <img :src="getImageUrl(sender.profileImage)">
+            <div class="flex justify-between items-center user-info header">
+                <div class="flex items-center">
+                    <div class="mx-3 my-2">
+                        <img class="rounded-full user-image" :src="getImageUrl(sender.profileImage)">
+                    </div>
+                    <div class="">{{sender.name}}</div>
+                </div>
+                <div class="heading-dot relative mr-2">
+                    <i class="fa fa-ellipsis-v text-2xl text-gray-700" aria-hidden="true"
+                       @click="$refs.userSettings.classList.toggle('hidden')"></i>
+                    <div class="absolute bg-white right-0 hidden rounded shadow user-settings z-10"
+                         @mouseleave="$refs.userSettings.classList.toggle('hidden')" ref="userSettings">
+                        <ul class="text-sm text-gray-800">
+                            <router-link class="block hover:bg-gray-200 px-3 py-2" to="/settings">Settings</router-link>
+                            <router-link class="block hover:bg-gray-200 px-3 py-2"
+                                         :to="{name: 'Profile', params: {userId: sender.id}}">Profile
+                            </router-link>
+                            <li>
+                                <a @click="logOut()" class="block hover:bg-gray-200 px-3 py-2"
+                                   href="javascript:void(0)">Logout</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -33,20 +51,21 @@
                     <span class="heading-online text-xs" v-if="receiver.isActive">Online</span>
                 </div>
             </div>
-            <div class="heading-dot relative">
-                <i class="fa fa-ellipsis-v text-2xl" aria-hidden="true"
-                   @click="$refs.userSettings.classList.toggle('hidden')"></i>
-                <div class="absolute bg-white right-0 hidden shadow user-settings"
-                     @mouseleave="$refs.userSettings.classList.toggle('hidden')" ref="userSettings">
-                    <ul>
-                        <router-link class="block hover:bg-gray-200 px-3 py-2" to="/settings">Settings</router-link>
-                        <router-link class="block hover:bg-gray-200 px-3 py-2" to="/profile">Profile</router-link>
-                        <li>
-                            <a @click="logOut()" class="block hover:bg-gray-200 px-3 py-2" href="javascript:void(0)" >Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <!--            <div class="heading-dot relative">-->
+            <!--                <i class="fa fa-ellipsis-v text-2xl" aria-hidden="true"-->
+            <!--                   @click="$refs.userSettings.classList.toggle('hidden')"></i>-->
+            <!--                <div class="absolute bg-white right-0 hidden shadow user-settings"-->
+            <!--                     @mouseleave="$refs.userSettings.classList.toggle('hidden')" ref="userSettings">-->
+            <!--                    <ul>-->
+            <!--                        <router-link class="block hover:bg-gray-200 px-3 py-2" to="/settings">Settings</router-link>-->
+            <!--                        <router-link class="block hover:bg-gray-200 px-3 py-2"-->
+            <!--                                     :to="{name: 'Profile', params: {userId: sender.id}}">Profile</router-link>-->
+            <!--                        <li>-->
+            <!--                            <a @click="logOut()" class="block hover:bg-gray-200 px-3 py-2" href="javascript:void(0)" >Logout</a>-->
+            <!--                        </li>-->
+            <!--                    </ul>-->
+            <!--                </div>-->
+            <!--            </div>-->
         </div>
         <div class="conversation-container overflow-auto h-full" ref="conversation-container">
             <div class="conversation-body" ref="conversation-body">

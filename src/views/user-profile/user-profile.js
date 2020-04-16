@@ -12,12 +12,13 @@ export default {
       profileImage: {
         file: ''
       },
-      isFormEditable: false
+      isFormEditable: false,
+      activeUser: ''
     }
   },
   methods: {
     getUserData () {
-      HttpService.post('user-profile', this.userId).then(res => {
+      HttpService.post('user-profile', {userId: this.userId}).then(res => {
         console.log('result', res)
         this.userData = res.data.data
       })
@@ -49,7 +50,8 @@ export default {
   },
   computed: {},
   mounted () {
-    this.userId = this.$route.params;
+    this.activeUser = UtilityService.getUserData();
+    this.userId = this.$route.params.userId;
     this.getUserData();
   }
 }

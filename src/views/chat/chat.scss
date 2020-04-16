@@ -1,6 +1,18 @@
 @import '../../assets/scss/common.scss';
 
 .chat-main {
+  .header {
+    background: #eee;
+    .heading-dot {
+      cursor: pointer;
+    }
+  }
+  .user-info {
+    .user-image {
+      height: 40px;
+      width: 40px;
+    }
+  }
 
   .user-settings {
     width: 150px;
@@ -51,7 +63,7 @@
     }
 
     .heading-dot {
-      padding: 0;
+      cursor: pointer;
       margin-left: 10px;
     }
 
