@@ -4,14 +4,8 @@
             <div class="flex ww-full heading">
                 <div class="heading-avatar">
                     <div class="heading-avatar-icon">
-                        <img src="../../assets/images/default-user.png">
+                        <img :src="getImageUrl(sender.profileImage)">
                     </div>
-                </div>
-                <div class="heading-dot  pull-right">
-                    <i class="fa fa-ellipsis-v text-2xl  pull-right" aria-hidden="true"></i>
-                </div>
-                <div class="heading-compose  pull-right">
-                    <i class="fa fa-comments text-2xl  pull-right" aria-hidden="true"></i>
                 </div>
             </div>
             <div class="w-full searchBox px-2 py-3 bg-gray-300">
