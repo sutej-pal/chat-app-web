@@ -28,7 +28,6 @@ export default class UtilityService {
   }
 
   static getImageUrl (url: string) {
-    console.log(process.env.VUE_APP_base_url + url);
     return process.env.VUE_APP_base_url + url
   }
 }

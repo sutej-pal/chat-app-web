@@ -18,6 +18,9 @@ export default Vue.component('all-users-list', {
         console.log('users', response.data)
         this.allUsers = response.data.data;
       });
+    },
+    getImageUrl (url) {
+      return UtilityService.getImageUrl(url)
     }
   },
   computed: {
@@ -25,9 +28,6 @@ export default Vue.component('all-users-list', {
       return this.allUsers.filter((user) => {
         return user.name.toLowerCase().includes(this.searchText.toLowerCase())
       })
-    },
-    getImageUrl (url) {
-      return UtilityService.getImageUrl(url)
     }
   },
   async mounted () {
