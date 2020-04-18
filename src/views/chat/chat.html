@@ -1,0 +1,101 @@
+<div class="flex chat-main h-full">
+    <div class="sidebar-container w-1/4 bg-green-200 h-full">
+        <div class="flex flex-col h-full">
+            <div class="flex justify-between items-center user-info header">
+                <div class="flex items-center">
+                    <div class="mx-3 my-2">
+                        <img class="rounded-full user-image" :src="getImageUrl(sender.profileImage)">
+                    </div>
+                    <div class="">{{sender.name}}</div>
+                </div>
+                <div class="heading-dot relative mr-2">
+                    <i class="fa fa-ellipsis-v text-2xl text-gray-700" aria-hidden="true"
+                       @click="$refs.userSettings.classList.toggle('hidden')"></i>
+                    <div class="absolute bg-white right-0 hidden rounded shadow user-settings z-10"
+                         @mouseleave="$refs.userSettings.classList.toggle('hidden')" ref="userSettings">
+                        <ul class="text-sm text-gray-800">
+                            <router-link class="block hover:bg-gray-200 px-3 py-2" to="/settings">Settings</router-link>
+                            <router-link class="block hover:bg-gray-200 px-3 py-2"
+                                         :to="{name: 'Profile', params: {userId: sender.id}}">Profile
+                            </router-link>
+                            <li>
+                                <a @click="logOut()" class="block hover:bg-gray-200 px-3 py-2"
+                                   href="javascript:void(0)">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full searchBox px-2 py-3 bg-gray-300">
+                <div class="searchBox-inner h-full relative">
+                    <input type="text" class="h-6 p-2 rounded text-gray-700 text-xs w-full"
+                           v-model="searchText" placeholder="Search or start a new chat">
+                    <span class="fa fa-times absolute" @click="searchText = ''"></span>
+                </div>
+            </div>
+            <recent-user-list v-if="searchText === ''" :users="users" :receiver="receiver" :searchText="searchText"
+                              @newReceiver="selectReceiver"/>
+            <all-user-list v-else :searchText="searchText" @newReceiver="selectReceiver"/>
+        </div>
+    </div>
+    <div class="conversation flex flex-col w-3/4">
+        <div class="flex heading justify-between sticky top-0 w-full">
+            <div class="flex">
+                <router-link :to="{name: 'Profile', params: {userId: receiver.id}}" class="heading-avatar">
+                    <div class="heading-avatar-icon">
+                        <img :src="getImageUrl(receiver.profileImage)">
+                    </div>
+                </router-link>
+                <div class="heading-name">
+                    <a class="heading-name-meta">{{receiver.name}}</a>
+                    <span class="heading-online text-xs" v-if="receiver.isActive">Online</span>
+                </div>
+            </div>
+            <!--            <div class="heading-dot relative">-->
+            <!--                <i class="fa fa-ellipsis-v text-2xl" aria-hidden="true"-->
+            <!--                   @click="$refs.userSettings.classList.toggle('hidden')"></i>-->
+            <!--                <div class="absolute bg-white right-0 hidden shadow user-settings"-->
+            <!--                     @mouseleave="$refs.userSettings.classList.toggle('hidden')" ref="userSettings">-->
+            <!--                    <ul>-->
+            <!--                        <router-link class="block hover:bg-gray-200 px-3 py-2" to="/settings">Settings</router-link>-->
+            <!--                        <router-link class="block hover:bg-gray-200 px-3 py-2"-->
+            <!--                                     :to="{name: 'Profile', params: {userId: sender.id}}">Profile</router-link>-->
+            <!--                        <li>-->
+            <!--                            <a @click="logOut()" class="block hover:bg-gray-200 px-3 py-2" href="javascript:void(0)" >Logout</a>-->
+            <!--                        </li>-->
+            <!--                    </ul>-->
+            <!--                </div>-->
+            <!--            </div>-->
+        </div>
+        <div class="conversation-container overflow-auto h-full" ref="conversation-container">
+            <div class="conversation-body" ref="conversation-body">
+                <div :class="{
+                         'sender bg-green-200': message.senderId !== receiver.id,
+                         'receiver bg-gray-300': message.senderId === receiver.id
+                        }" v-for="(message, index) in messages" :key="index">
+                    <div class="text-left text-sm text-gray-800" style="white-space: pre-wrap"
+                         v-html="message.message"></div>
+                    <div class="text-right text-xs text-gray-600">{{getMessageTime(message.createdAt)}}</div>
+                </div>
+                <div v-if="messages.length === 0" class="py-5 text-center text-lg">
+                    Start Conversation ...
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-0 flex reply sticky w-full justify-around items-center text-gray-500">
+            <div class="reply-emojis">
+                <i class="fa fa-smile-o text-2xl"></i>
+            </div>
+            <div class="reply-main w-full text-gray-700">
+                            <textarea name="" placeholder="Type a message" v-model='message'
+                                      @keyup.enter="sendMessage"></textarea>
+            </div>
+            <!--                <div class="reply-recording">-->
+            <!--                    <i class="fa fa-microphone text-2xl" aria-hidden="true"></i>-->
+            <!--                </div>-->
+            <div class="reply-send px-2 hover:text-gray-600">
+                <i class="fa fa-send text-2xl" aria-hidden="true" @click="sendMessage()"></i>
+            </div>
+        </div>
+    </div>
+</div>

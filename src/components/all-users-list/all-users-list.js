@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import HttpService from '../../services/http.service'
+import UtilityService from '../../services/utility.service'
 
 export default Vue.component('all-users-list', {
   props: ['searchText'],
@@ -24,6 +25,9 @@ export default Vue.component('all-users-list', {
       return this.allUsers.filter((user) => {
         return user.name.toLowerCase().includes(this.searchText.toLowerCase())
       })
+    },
+    getImageUrl (url) {
+      return UtilityService.getImageUrl(url)
     }
   },
   async mounted () {

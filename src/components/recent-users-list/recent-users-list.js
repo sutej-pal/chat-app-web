@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import moment from 'moment'
+import UtilityService from '../../services/utility.service'
 
 export default Vue.component('user-list', {
   props: ['users', 'receiver', 'searchText'],
@@ -10,6 +11,9 @@ export default Vue.component('user-list', {
     getLastUpdateTime (time) {
       console.log('time', moment(time).format());
       console.log('time', moment(time).diff(moment(), 'days'));
+    },
+    getImageUrl (url) {
+      return UtilityService.getImageUrl(url)
     }
   },
   computed: {

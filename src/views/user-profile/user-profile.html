@@ -1,0 +1,56 @@
+<div class="user-profile-main">
+    <div class="bg-center bg-cover cover-image" v-if="userData.coverImage"
+         :style="{'background-image': 'url(' + getImageUrl(userData.coverImage) + ')'}"/>
+    <div class="absolute md:px-5 md:text-left sm:text-center profile-image-container top w-full inline-block"
+         v-if="activeUser.id === userId">
+        <div class="profile-image inline-block relative rounded-full"
+             @mouseenter="$refs.clickToUpload.classList.remove('hidden')"
+             @mouseleave="$refs.clickToUpload.classList.add('hidden')">
+            <div class="absolute click-to-upload flex items-center justify-center rounded-full text-4xl text-white hidden flex-col"
+                 ref="clickToUpload" @click="$refs.userProfile.click()">
+                <span><i class="fa fa-camera"></i></span>
+                <div class="text-sm">Click Here</div>
+            </div>
+            <input type="file" class="hidden" ref="userProfile" @change="onImageUpload('profileImage', $event)">
+            <img v-if="profileImage.file === ''" class="rounded-full w-full h-auto m-auto inline"
+                 :src="getImageUrl(userData.profileImage)" alt="">
+            <img v-else class="rounded-full w-full h-auto m-auto inline" :src="profileImage.object" alt="">
+        </div>
+    </div>
+    <div v-else class="absolute md:px-5 md:text-left sm:text-center profile-image-container top w-full inline-block">
+        <div class="profile-image inline-block relative rounded-full">
+            <img v-if="profileImage.file === ''" class="rounded-full w-full h-auto m-auto inline"
+                 :src="getImageUrl(userData.profileImage)" alt="">
+        </div>
+    </div>
+
+    <div class="px-3 py-2 relative text-gray-700 text-sm user-details z-10">
+        <div class="edit-button text-right pb-3" v-if="activeUser.id === userId">
+            <a @click="isFormEditable = true">
+                <i class="fa fa-edit"></i>
+                Edit
+            </a>
+        </div>
+        <div class="w-3/4 ml-auto pb-5">
+            <textarea :disabled="!isFormEditable" class="user-bio overflow-auto resize-none w-full p-2"
+                      :style="{'height': 100 + 'px'}"
+                      v-model="userData.bio" ref="userBio"></textarea>
+        </div>
+        <div class="flex w-3/4 pb-2">
+            <div class="w-1/3 text-center">Name</div>
+            <div>{{userData.name}}</div>
+        </div>
+        <div class="flex w-3/4 pb-2">
+            <div class="w-1/3 text-center">Email</div>
+            <div>{{userData.email}}</div>
+        </div>
+        <div class="text-center mt-5" v-if="isFormEditable">
+            <button @click="updateUserProfile()"
+                    class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-blue-300"
+                    type="button" :disabled="false">
+                <span v-if="true">Update</span>
+                <span v-else>Updating <i class="fa fa-circle-o-notch fa-spin"></i></span>
+            </button>
+        </div>
+    </div>
+</div>

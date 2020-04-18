@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/home/home.vue'
-import Dashboard from '../views/dashboard/dashboard.vue'
+import Home from '../views/dashboard/dashboard.vue'
 import SignUp from '../views/sign-up/sign-up.vue'
 import Login from '../views/login/login.vue'
 import NotFound from '../views/not-found/not-found.vue'
@@ -27,15 +26,25 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: Home
-  },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
+    component: Home,
     meta: {
       auth: true
-    }
+    },
+    children: [
+      {
+        path: '/',
+        name: 'Chat',
+        component: () => import('../views/chat/chat.vue')
+      },
+      {
+        path: '/profile',
+        name: 'Profile',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "about" */ '../views/user-profile/user-profile.vue')
+      }
+    ]
   },
   {
     path: '/verify-user',
