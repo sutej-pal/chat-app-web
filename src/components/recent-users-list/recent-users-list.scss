@@ -1,10 +1,11 @@
 .sidebar-card {
   position: relative;
-  padding: 10px !important;
+  padding: 10px;
   border-bottom: 1px solid #f7f7f7;
-  margin: 0 !important;
   cursor: pointer;
-  height: 80px;
+  height: 70px;
+  justify-content: flex-start;
+  align-items: center;
 
 
   .sideBar-avatar {
