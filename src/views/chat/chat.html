@@ -6,7 +6,7 @@
                     <div class="mx-3 my-2">
                         <img class="rounded-full user-image" :src="getImageUrl(sender.profileImage)">
                     </div>
-                    <div class="">{{sender.name}}</div>
+                    <div class="font-semibold">{{sender.name}}</div>
                 </div>
                 <div class="heading-dot relative mr-2">
                     <i class="fa fa-ellipsis-v text-2xl text-gray-700" aria-hidden="true"
@@ -40,15 +40,15 @@
     </div>
     <div class="conversation flex flex-col w-3/4">
         <div class="flex justify-between items-center user-info header">
-            <a :to="{name: 'Profile', params: {userId: receiver.id}}" class="flex items-center">
+            <router-link :to="{name: 'Profile', params: {userId: receiver.id}}" class="flex items-center">
                 <div class="mx-3 my-2">
                     <img class="rounded-full user-image" v-if="receiver.profileImage" :src="getImageUrl(receiver.profileImage)">
                 </div>
                 <div class="heading-name">
-                    <a class="heading-name-meta">{{receiver.name}}</a>
-                    <span class="heading-online text-xs" v-if="receiver.isActive">Online</span>
+                    <div class="heading-name-meta font-semibold">{{receiver.name}}</div>
+                    <div class="heading-online text-xs" v-if="receiver.isActive">Online</div>
                 </div>
-            </a>
+            </router-link>
         </div>
         <conversation-container :conversation="messages" :receiver="receiver" ></conversation-container>
         <div class="absolute bottom-0 flex reply sticky w-full justify-around items-center text-gray-500">
