@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="h-screen">
+  <div id="app" class="">
     <router-view/>
   </div>
 </template>
@@ -25,5 +25,8 @@
         color: #42b983;
       }
     }
+  }
+  html, body, #app {
+    height: 100%;
   }
 </style>
