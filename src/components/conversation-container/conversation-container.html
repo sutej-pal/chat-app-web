@@ -4,6 +4,8 @@
                          'sender bg-green-200': message.senderId !== receiver.id,
                          'receiver bg-gray-300': message.senderId === receiver.id
                         }" v-for="(message, index) in conversation" :key="index">
+            <img v-if="message.attachments && message.attachments.file"
+                 :src="'http://localhost:3000/' + message.attachments.file " alt="">
             <div class="text-left text-sm text-gray-800" style="white-space: pre-wrap"
                  v-html="message.message"></div>
             <div class="text-right text-xs text-gray-600">

@@ -17,11 +17,18 @@ export default Vue.extend({
     return {
       searchText: '',
       users: [],
-      message: '',
+      message: {
+        message: '',
+        attachments: {
+          type: '',
+          file: ''
+        }
+      },
       messages: [],
       socket: io(process.env.VUE_APP_base_url),
       receiver: {},
-      sender: {}
+      sender: {},
+      isAttachmentUploadVisible: false
     }
   },
   methods: {
@@ -43,15 +50,22 @@ export default Vue.extend({
       const data = {
         senderId: this.sender.id,
         receiverId: this.receiver.id,
-        message: this.message.trim(),
+        message: this.message.message.trim(),
         createdAt: ''
       }
-      console.log('data', data)
+      if (this.message.attachments && this.message.attachments.file) {
+        data.attachments = {
+          type: 'image',
+          file: this.message.attachments.file,
+          fileName: this.message.attachments.file.name
+        }
+      }
       this.messages.push(data)
-      this.scrollConversationToBottom()
+      this.scrollConversationToBottom();
       this.socket.emit('SEND_MESSAGE', data)
       await this.setReceiverOnTopOfList()
-      this.message = ''
+      this.message = {}
+      this.isAttachmentUploadVisible = false
     },
     async setReceiverOnTopOfList () {
       const temp = [...this.users]
@@ -121,7 +135,22 @@ export default Vue.extend({
       } else {
         this.messages.push(serverMessage)
       }
-      this.scrollConversationToBottom()
+      setTimeout(() => {
+        this.scrollConversationToBottom()
+      }, 500)
+    },
+    async addAttachment (event) {
+      if (event.target.files && event.target.files[0]) {
+        const file = event.target.files[0]
+        const object = await UtilityService.onImageUpload(event)
+        this.isAttachmentUploadVisible = true
+        console.log(object)
+        this.message.attachments = {
+          type: 'image',
+          file: file,
+          objectUrl: URL.createObjectURL(file)
+        }
+      }
     }
   },
   async mounted () {

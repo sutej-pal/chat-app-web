@@ -42,7 +42,8 @@
         <div class="flex justify-between items-center user-info header">
             <router-link :to="{name: 'Profile', params: {userId: receiver.id}}" class="flex items-center">
                 <div class="mx-3 my-2">
-                    <img class="rounded-full user-image" v-if="receiver.profileImage" :src="getImageUrl(receiver.profileImage)">
+                    <img class="rounded-full user-image" v-if="receiver.profileImage"
+                         :src="getImageUrl(receiver.profileImage)">
                 </div>
                 <div class="heading-name">
                     <div class="heading-name-meta font-semibold">{{receiver.name}}</div>
@@ -50,21 +51,38 @@
                 </div>
             </router-link>
         </div>
-        <conversation-container :conversation="messages" :receiver="receiver" ></conversation-container>
+        <div v-if="isAttachmentUploadVisible" class="absolute flex flex-col items-center h-full pt-3 justify-center left-0 right-0 top-0"
+             style="background: #000000aa;z-index: 1001"
+        >
+            <button class="absolute border fa fa-times px-2 py-1 right-0 rounded-full text-white"
+                  @click="isAttachmentUploadVisible = false"></button>
+            <div>
+                <img :src="message.attachments.objectUrl" alt="" style="height: 400px;width: auto">
+            </div>
+            <div>
+                <textarea class="w-full" v-model="message.message"></textarea>
+            </div>
+            <button class="reply-send px-2 hover:text-gray-600">
+                <i class="fa fa-send text-xl" aria-hidden="true" @click="sendMessage()"></i>
+            </button>
+        </div>
+        <conversation-container :conversation="messages" :receiver="receiver"></conversation-container>
         <div class="absolute bottom-0 flex reply sticky w-full justify-around items-center text-gray-500">
-            <div class="reply-emojis">
-                <i class="fa fa-smile-o text-2xl"></i>
+            <div class="reply-emojis px-2 hover:text-gray-600">
+                <i class="fa fa-smile-o text-xl"></i>
             </div>
             <div class="reply-main w-full text-gray-700">
-                            <textarea name="" placeholder="Type a message" v-model='message'
+                            <textarea name="" placeholder="Type a message" v-model='message.message'
                                       @keyup.enter="sendMessage"></textarea>
             </div>
-            <!--                <div class="reply-recording">-->
-            <!--                    <i class="fa fa-microphone text-2xl" aria-hidden="true"></i>-->
-            <!--                </div>-->
-            <div class="reply-send px-2 hover:text-gray-600">
-                <i class="fa fa-send text-2xl" aria-hidden="true" @click="sendMessage()"></i>
-            </div>
+            <button class="reply-recording px-2 hover:text-gray-600 focus:outline-none"
+                    @click="$refs.attachment.click()">
+                <i class="fa fa-paperclip text-xl" aria-hidden="true"></i>
+            </button>
+            <input type="file" ref="attachment" class="hidden" @change="addAttachment">
+            <button class="reply-send px-2 hover:text-gray-600">
+                <i class="fa fa-send text-xl" aria-hidden="true" @click="sendMessage()"></i>
+            </button>
         </div>
     </div>
 </div>
