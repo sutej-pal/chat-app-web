@@ -57,22 +57,22 @@
             <button class="absolute border fa fa-times px-2 py-1 right-0 rounded-full text-white"
                   @click="isAttachmentUploadVisible = false"></button>
             <div>
-                <img :src="message.attachments.objectUrl" alt="" style="height: 400px;width: auto">
+                <img :src="messageObject.attachments.objectUrl" alt="" style="height: 400px;width: auto">
             </div>
             <div>
-                <textarea class="w-full" v-model="message.message"></textarea>
+                <textarea class="w-full" v-model="messageObject.message"></textarea>
             </div>
             <button class="reply-send px-2 hover:text-gray-600">
                 <i class="fa fa-send text-xl" aria-hidden="true" @click="sendMessage()"></i>
             </button>
         </div>
-        <conversation-container :conversation="messages" :receiver="receiver"></conversation-container>
+        <conversation-container :conversation="messagesList" :receiver="receiver"></conversation-container>
         <div class="absolute bottom-0 flex reply sticky w-full justify-around items-center text-gray-500">
             <div class="reply-emojis px-2 hover:text-gray-600">
                 <i class="fa fa-smile-o text-xl"></i>
             </div>
             <div class="reply-main w-full text-gray-700">
-                            <textarea name="" placeholder="Type a message" v-model='message.message'
+                            <textarea name="" placeholder="Type a message" v-model='messageObject.message'
                                       @keyup.enter="sendMessage"></textarea>
             </div>
             <button class="reply-recording px-2 hover:text-gray-600 focus:outline-none"

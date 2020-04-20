@@ -17,14 +17,14 @@ export default Vue.extend({
     return {
       searchText: '',
       users: [],
-      message: {
+      messageObject: {
         message: '',
         attachments: {
           type: '',
           file: ''
         }
       },
-      messages: [],
+      messagesList: [],
       socket: io(process.env.VUE_APP_base_url),
       receiver: {},
       sender: {},
@@ -33,38 +33,45 @@ export default Vue.extend({
   },
   methods: {
     selectReceiver (receiver) {
-      this.searchText = ''
-      this.receiver = receiver
-      this.getChatHistory()
-      // this.getReceiverStatus();
+      if (this.receiver.id === receiver.id) {
+        return
+      }
+      this.searchText = '';
+      this.receiver = receiver;
+      this.getChatHistory();
     },
     async sendMessage (event) {
       if (event && event.shiftKey) {
-        // console.log(event.target.clientHeight);
-        // event.target.style.height = event.target.clientHeight + 25 + 'px'
         return
       }
-      if (this.message === '') {
+      if (this.messageObject.message === '' && !(this.messageObject.attachments && this.messageObject.attachments.file)) {
         return
       }
       const data = {
         senderId: this.sender.id,
         receiverId: this.receiver.id,
-        message: this.message.message.trim(),
+        message: this.messageObject.message.trim(),
         createdAt: ''
       }
-      if (this.message.attachments && this.message.attachments.file) {
+      if (this.messageObject.attachments && this.messageObject.attachments.file) {
         data.attachments = {
           type: 'image',
-          file: this.message.attachments.file,
-          fileName: this.message.attachments.file.name
+
+          file: this.messageObject.attachments.file,
+          fileName: this.messageObject.attachments.file.name
         }
       }
-      this.messages.push(data)
+      this.messagesList.push(data)
       this.scrollConversationToBottom();
       this.socket.emit('SEND_MESSAGE', data)
-      await this.setReceiverOnTopOfList()
-      this.message = {}
+      await this.setReceiverOnTopOfList();
+      this.messageObject = {
+        message: '',
+        attachments: {
+          type: '',
+          file: ''
+        }
+      }
       this.isAttachmentUploadVisible = false
     },
     async setReceiverOnTopOfList () {
@@ -96,8 +103,8 @@ export default Vue.extend({
       }
       HttpService.post('chat-history-1', data)
         .then(res => {
-          this.messages = res.data.data
-          console.log('messages', this.messages)
+          this.messagesList = res.data.data
+          console.log('messagesList', this.messagesList)
           this.scrollConversationToBottom()
         })
     },
@@ -126,14 +133,14 @@ export default Vue.extend({
       return UtilityService.getImageUrl(url)
     },
     updateMessagesArray (serverMessage) {
-      const index = this.messages.length - 1
+      const index = this.messagesList.length - 1
       if (serverMessage.senderId === this.sender.id) {
         if (index > -1) {
-          this.messages.splice(index, 1)
+          this.messagesList.splice(index, 1)
         }
-        this.messages.push(serverMessage)
+        this.messagesList.push(serverMessage)
       } else {
-        this.messages.push(serverMessage)
+        this.messagesList.push(serverMessage)
       }
       setTimeout(() => {
         this.scrollConversationToBottom()
@@ -145,7 +152,7 @@ export default Vue.extend({
         const object = await UtilityService.onImageUpload(event)
         this.isAttachmentUploadVisible = true
         console.log(object)
-        this.message.attachments = {
+        this.messageObject.attachments = {
           type: 'image',
           file: file,
           objectUrl: URL.createObjectURL(file)

@@ -5,7 +5,6 @@ export default {
   props: ['conversation', 'receiver'],
   methods: {
     checkCreatedAt(date) {
-      console.log('date', date, moment(date).isValid());
       return moment(date).isValid();
     },
     getMessageTime(creationTime) {
