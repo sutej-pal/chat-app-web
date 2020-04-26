@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import _ from 'underscore'
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 import HttpService from '../../services/http.service.ts'
 import UtilityService from '../../services/utility.service.ts'
 import RecentUserList from '../../components/recent-users-list/recent-users-list.vue'
 import AllUserList from '../../components/all-users-list/all-users-list.vue'
 import ConversationContainer from '../../components/conversation-container/conversation-container.vue'
+import socket from '../../utils/socket'
 
 export default Vue.extend({
   components: {
@@ -25,7 +26,7 @@ export default Vue.extend({
         }
       },
       messagesList: [],
-      socket: io(process.env.VUE_APP_base_url),
+      socket: socket,
       receiver: {},
       sender: {},
       isAttachmentUploadVisible: false
@@ -62,8 +63,8 @@ export default Vue.extend({
         }
       }
       this.messagesList.push(data)
-      this.scrollConversationToBottom();
-      this.socket.emit('SEND_MESSAGE', data)
+      // this.scrollConversationToBottom();
+      this.socket.emit('send-message', data)
       await this.setReceiverOnTopOfList();
       this.messageObject = {
         message: '',
@@ -81,7 +82,6 @@ export default Vue.extend({
         await this.getRecentUsers()
         return
       }
-      console.log('index', index)
       temp.splice(index, 1)
       temp.splice(0, 0, this.receiver)
       this.users = temp
@@ -105,7 +105,7 @@ export default Vue.extend({
         .then(res => {
           this.messagesList = res.data.data
           console.log('messagesList', this.messagesList)
-          this.scrollConversationToBottom()
+          // this.scrollConversationToBottom()
         })
     },
     scrollConversationToBottom () {
@@ -143,7 +143,7 @@ export default Vue.extend({
         this.messagesList.push(serverMessage)
       }
       setTimeout(() => {
-        this.scrollConversationToBottom()
+        // this.scrollConversationToBottom()
       }, 500)
     },
     async addAttachment (event) {
@@ -164,7 +164,7 @@ export default Vue.extend({
     this.sender = UtilityService.getUserData()
     await this.getRecentUsers()
     this.socket.emit('update-user-status', this.sender)
-    this.socket.on('MESSAGE', (message) => {
+    this.socket.on('message', (message) => {
       this.updateMessagesArray(message)
     })
     this.socket.on('offline-user', (offlineUserData) => {
