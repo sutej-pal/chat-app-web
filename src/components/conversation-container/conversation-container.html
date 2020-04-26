@@ -5,7 +5,7 @@
                          'receiver bg-gray-300': message.senderId === receiver.id
                         }" v-for="(message, index) in conversation" :key="index">
             <div class="image-holder flex justify-center flex-col items-center p-1" v-if="message.attachments && message.attachments.file">
-                <img v-if="typeof message.attachments.file === 'string'" class="rounded" :src="'http://localhost:3000/' + message.attachments.file " alt="">
+                <img v-if="typeof message.attachments.file === 'string'" class="rounded" :src="getImageUrl(message.attachments.file) " alt="">
                 <span v-else class="fa fa-spinner fa-spin text-3xl text-gray-700"></span>
                 <div v-if="typeof message.attachments.file !== 'string'">uploading</div>
             </div>

@@ -7,6 +7,8 @@ import AllUserList from '../../components/all-users-list/all-users-list.vue'
 import ConversationContainer from '../../components/conversation-container/conversation-container.vue'
 import socket from '../../utils/socket'
 
+const socketConn = socket
+
 export default Vue.extend({
   components: {
     'recent-user-list': RecentUserList,
@@ -25,7 +27,6 @@ export default Vue.extend({
         }
       },
       messagesList: [],
-      socket: socket,
       receiver: {},
       sender: {},
       isAttachmentUploadVisible: false
@@ -64,7 +65,7 @@ export default Vue.extend({
         }
       }
       this.messagesList.push(data);
-      this.socket.emit('send-message', data);
+      socketConn.emit('send-message', data);
       await this.setReceiverOnTopOfList();
       this.messageObject = {
         message: '',
@@ -155,18 +156,18 @@ export default Vue.extend({
   async mounted () {
     this.sender = UtilityService.getUserData()
     await this.getRecentUsers()
-    this.socket.emit('update-user-status', this.sender)
-    this.socket.on('message', (message) => {
+    socketConn.emit('update-user-status', this.sender)
+    socketConn.on('message', (message) => {
       this.updateMessagesArray(message)
     })
-    this.socket.on('offline-user', (offlineUserData) => {
+    socketConn.on('offline-user', (offlineUserData) => {
       _.each(this.users, user => {
         if (offlineUserData._id === user.id) {
           user.isActive = offlineUserData.isActive
         }
       })
     })
-    this.socket.on('online-user', (onlineUserData) => {
+    socketConn.on('online-user', (onlineUserData) => {
       _.each(this.users, user => {
         if (onlineUserData.id === user.id) {
           user.isActive = true

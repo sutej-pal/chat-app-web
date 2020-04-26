@@ -1,4 +1,5 @@
 import moment from 'moment'
+import UtilityService from '../../services/utility.service'
 
 export default {
   name: 'conversation-container',
@@ -24,6 +25,9 @@ export default {
       const element = document.getElementById('conversation-container')
       this.scrollHeight = element.scrollHeight
       element.scrollTop = element.scrollHeight
+    },
+    getImageUrl (url) {
+      return UtilityService.getImageUrl(url);
     }
   },
   mounted () {
