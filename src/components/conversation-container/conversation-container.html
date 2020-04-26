@@ -4,8 +4,11 @@
                          'sender bg-green-200': message.senderId !== receiver.id,
                          'receiver bg-gray-300': message.senderId === receiver.id
                         }" v-for="(message, index) in conversation" :key="index">
-            <img v-if="message.attachments && message.attachments.file"
-                 :src="'http://localhost:3000/' + message.attachments.file " alt="">
+            <div class="image-holder flex justify-center flex-col items-center p-1" v-if="message.attachments && message.attachments.file">
+                <img v-if="typeof message.attachments.file === 'string'" class="rounded" :src="'http://localhost:3000/' + message.attachments.file " alt="">
+                <span v-else class="fa fa-spinner fa-spin text-3xl text-gray-700"></span>
+                <div v-if="typeof message.attachments.file !== 'string'">uploading</div>
+            </div>
             <div class="text-left text-sm text-gray-800" style="white-space: pre-wrap"
                  v-html="message.message"></div>
             <div class="text-right text-xs text-gray-600">

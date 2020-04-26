@@ -9,6 +9,14 @@
       max-width: 60%;
       margin: 7px 10px 10px auto;
       text-align: right;
+      .image-holder {
+        height: 200px;
+        min-width: 200px;
+        img {
+          height: 100%;
+          width: auto;
+        }
+      }
     }
 
     .receiver {

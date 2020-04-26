@@ -51,11 +51,12 @@
                 </div>
             </router-link>
         </div>
-        <div v-if="isAttachmentUploadVisible" class="absolute flex flex-col items-center h-full pt-3 justify-center left-0 right-0 top-0"
+        <div v-if="isAttachmentUploadVisible"
+             class="absolute flex flex-col items-center h-full pt-3 justify-center left-0 right-0 top-0"
              style="background: #000000aa;z-index: 1001"
         >
             <button class="absolute border fa fa-times px-2 py-1 right-0 rounded-full text-white"
-                  @click="isAttachmentUploadVisible = false"></button>
+                    @click="isAttachmentUploadVisible = false"></button>
             <div>
                 <img :src="messageObject.attachments.objectUrl" alt="" style="height: 400px;width: auto">
             </div>

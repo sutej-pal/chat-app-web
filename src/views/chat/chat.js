@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import _ from 'underscore'
-// import io from 'socket.io-client'
 import HttpService from '../../services/http.service.ts'
 import UtilityService from '../../services/utility.service.ts'
 import RecentUserList from '../../components/recent-users-list/recent-users-list.vue'
@@ -42,6 +41,9 @@ export default Vue.extend({
       this.getChatHistory();
     },
     async sendMessage (event) {
+      if (this.messageObject.message[0] === '\n') {
+        this.messageObject.message = '';
+      }
       if (event && event.shiftKey) {
         return
       }
@@ -57,14 +59,12 @@ export default Vue.extend({
       if (this.messageObject.attachments && this.messageObject.attachments.file) {
         data.attachments = {
           type: 'image',
-
           file: this.messageObject.attachments.file,
           fileName: this.messageObject.attachments.file.name
         }
       }
-      this.messagesList.push(data)
-      // this.scrollConversationToBottom();
-      this.socket.emit('send-message', data)
+      this.messagesList.push(data);
+      this.socket.emit('send-message', data);
       await this.setReceiverOnTopOfList();
       this.messageObject = {
         message: '',
@@ -73,7 +73,7 @@ export default Vue.extend({
           file: ''
         }
       }
-      this.isAttachmentUploadVisible = false
+      this.isAttachmentUploadVisible = false;
     },
     async setReceiverOnTopOfList () {
       const temp = [...this.users]
@@ -88,7 +88,6 @@ export default Vue.extend({
     },
     async getRecentUsers () {
       HttpService.get('recent-users', true).then(response => {
-        console.log('users', response.data)
         this.users = response.data.data
         if (response.data.data.length > 0) {
           this.receiver = response.data.data[0]
@@ -103,9 +102,7 @@ export default Vue.extend({
       }
       HttpService.post('chat-history-1', data)
         .then(res => {
-          this.messagesList = res.data.data
-          console.log('messagesList', this.messagesList)
-          // this.scrollConversationToBottom()
+          this.messagesList = res.data.data;
         })
     },
     scrollConversationToBottom () {
@@ -125,7 +122,6 @@ export default Vue.extend({
     getReceiverStatus () {
       HttpService.get('user-status')
         .then(res => {
-          console.log('data', res)
           this.receiver = res.data.data[0]
         })
     },
@@ -142,16 +138,12 @@ export default Vue.extend({
       } else {
         this.messagesList.push(serverMessage)
       }
-      setTimeout(() => {
-        // this.scrollConversationToBottom()
-      }, 500)
     },
     async addAttachment (event) {
       if (event.target.files && event.target.files[0]) {
         const file = event.target.files[0]
-        const object = await UtilityService.onImageUpload(event)
-        this.isAttachmentUploadVisible = true
-        console.log(object)
+        // const object = await UtilityService.onImageUpload(event)
+        this.isAttachmentUploadVisible = true;
         this.messageObject.attachments = {
           type: 'image',
           file: file,
@@ -168,7 +160,6 @@ export default Vue.extend({
       this.updateMessagesArray(message)
     })
     this.socket.on('offline-user', (offlineUserData) => {
-      console.log('offline-user', offlineUserData)
       _.each(this.users, user => {
         if (offlineUserData._id === user.id) {
           user.isActive = offlineUserData.isActive
@@ -176,7 +167,6 @@ export default Vue.extend({
       })
     })
     this.socket.on('online-user', (onlineUserData) => {
-      console.log('online-user', onlineUserData)
       _.each(this.users, user => {
         if (onlineUserData.id === user.id) {
           user.isActive = true
