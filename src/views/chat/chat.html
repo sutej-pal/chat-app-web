@@ -38,7 +38,7 @@
             <all-user-list v-else :searchText="searchText" @newReceiver="selectReceiver"/>
         </div>
     </div>
-    <div class="conversation flex flex-col w-3/4">
+    <div class="conversation relative flex flex-col w-3/4">
         <div class="flex justify-between items-center user-info header">
             <router-link :to="{name: 'Profile', params: {userId: receiver.id}}" class="flex items-center">
                 <div class="mx-3 my-2">
@@ -51,29 +51,35 @@
                 </div>
             </router-link>
         </div>
-        <attachments-window v-if="isAttachmentUploadVisible"
-                            @hideWindow="isAttachmentUploadVisible = false"
-                            :messageObject="messageObject"
-                            @sendMessage="sendMessage"
-        ></attachments-window>
-        <conversation-container :conversation="messagesList" :receiver="receiver"></conversation-container>
+        <conversation-container :conversation="messagesList" :receiver="receiver"
+                                @toggleScrollBottomBtn="(data) => isScrollDownBtnVisible = data"></conversation-container>
+        <span @click="scrollToBottom()"
+              :class="{'active': isScrollDownBtnVisible}"
+              class="scroll-bottom flex justify-center items-center">
+            <span class="fa fa-chevron-down icon"></span>
+        </span>
         <div class="absolute bottom-0 flex reply sticky w-full justify-around items-center text-gray-500">
             <div class="reply-emojis px-2 hover:text-gray-600">
                 <i class="fa fa-smile-o text-xl"></i>
             </div>
             <div class="reply-main w-full text-gray-700">
                 <text-box @sendMessage="(msg) => sendMessage(msg)"></text-box>
-<!--                            <textarea name="" placeholder="Type a message" v-model='messageObject.message'-->
-<!--                                      @keyup.enter="sendMessage"></textarea>-->
+                <!--                            <textarea name="" placeholder="Type a message" v-model='messageObject.message'-->
+                <!--                                      @keyup.enter="sendMessage"></textarea>-->
             </div>
             <button class="reply-recording px-2 hover:text-gray-600 focus:outline-none"
                     @click="$refs.attachment.click()">
                 <i class="fa fa-paperclip text-xl" aria-hidden="true"></i>
             </button>
             <input type="file" ref="attachment" class="hidden" @change="addAttachment">
-<!--            <button class="reply-send px-2 hover:text-gray-600">-->
-<!--                <i class="fa fa-send text-xl" aria-hidden="true" @click="sendMsgBtnClicked"></i>-->
-<!--            </button>-->
+            <!--            <button class="reply-send px-2 hover:text-gray-600">-->
+            <!--                <i class="fa fa-send text-xl" aria-hidden="true" @click="sendMsgBtnClicked"></i>-->
+            <!--            </button>-->
         </div>
     </div>
+    <attachments-window v-if="isAttachmentUploadVisible"
+                        @hideWindow="isAttachmentUploadVisible = false"
+                        :messageObject="messageObject"
+                        @sendMessage="(msg) => sendMessage(msg)"
+    ></attachments-window>
 </div>

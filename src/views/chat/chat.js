@@ -34,7 +34,8 @@ export default Vue.extend({
       messagesList: [],
       receiver: {},
       sender: {},
-      isAttachmentUploadVisible: false
+      isAttachmentUploadVisible: false,
+      isScrollDownBtnVisible: false
     }
   },
   methods: {
@@ -151,6 +152,10 @@ export default Vue.extend({
           objectUrl: URL.createObjectURL(file)
         }
       }
+    },
+    scrollToBottom() {
+      document.querySelectorAll('.conversation-body')[0]
+        .lastElementChild.scrollIntoView({behavior: 'smooth'})
     }
   },
   async mounted () {

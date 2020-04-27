@@ -129,6 +129,35 @@
       }
     }
   }
+  .conversation {
+    .scroll-bottom {
+      position: absolute;
+      bottom: 74px;
+      right: 0;
+      left: 0;
+      margin: auto;
+      height: 40px;
+      width: 40px;
+      color: #35495e;
+      background: rgba(65, 184, 131, 0.6);
+      border-radius: 50px;
+      font-size: 25px;
+      cursor: pointer;
+      transition: all .5s;
+      opacity: 0;
+      visibility: hidden;
+      &.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      &:hover {
+        color: white;
+        background: #35495e;
+        box-shadow: 0 3px 12px 2px #0000006e;
+        transform: scale(1.1);
+      }
+    }
+  }
   .conversation-container, .sidebar, .reply-main textarea {
     @include scrollbar
   }

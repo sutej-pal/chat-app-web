@@ -6,7 +6,8 @@ export default {
   props: ['conversation', 'receiver'],
   data () {
     return {
-      scrollHeight: ''
+      scrollHeight: '',
+      isScrollDownBtnVisible: false
     }
   },
   methods: {
@@ -27,7 +28,10 @@ export default {
       element.scrollTop = element.scrollHeight
     },
     getImageUrl (url) {
-      return UtilityService.getImageUrl(url);
+      return UtilityService.getImageUrl(url)
+    },
+    handleScroll (event) {
+      this.isScrollDownBtnVisible = event.target.scrollHeight - (event.target.scrollTop + event.target.clientHeight) > 200;
     }
   },
   mounted () {
@@ -35,5 +39,10 @@ export default {
   },
   updated () {
     this.scrollToBottom()
+  },
+  watch: {
+    isScrollDownBtnVisible(newValue) {
+      this.$emit('toggleScrollBottomBtn', newValue);
+    }
   }
 }
