@@ -5,7 +5,10 @@ import UtilityService from '../../services/utility.service.ts'
 import RecentUserList from '../../components/recent-users-list/recent-users-list.vue'
 import AllUserList from '../../components/all-users-list/all-users-list.vue'
 import ConversationContainer from '../../components/conversation-container/conversation-container.vue'
+import AttachmentsWindow from '../../components/attachments-window/attachments-window.vue'
+import TextBox from '../../components/text-box/text-box.vue'
 import socket from '../../utils/socket'
+import { EventBus, Events } from '../../utils/eventBus'
 
 const socketConn = socket
 
@@ -13,7 +16,9 @@ export default Vue.extend({
   components: {
     'recent-user-list': RecentUserList,
     'all-user-list': AllUserList,
-    'conversation-container': ConversationContainer
+    'conversation-container': ConversationContainer,
+    'attachments-window': AttachmentsWindow,
+    'text-box': TextBox
   },
   data () {
     return {
@@ -41,13 +46,8 @@ export default Vue.extend({
       this.receiver = receiver;
       this.getChatHistory();
     },
-    async sendMessage (event) {
-      if (this.messageObject.message[0] === '\n') {
-        this.messageObject.message = '';
-      }
-      if (event && event.shiftKey) {
-        return
-      }
+    async sendMessage (msg) {
+      this.messageObject.message = msg
       if (this.messageObject.message === '' && !(this.messageObject.attachments && this.messageObject.attachments.file)) {
         return
       }
