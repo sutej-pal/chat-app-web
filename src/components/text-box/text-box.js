@@ -1,8 +1,14 @@
 export default {
+  props: ['hitSendMessage'],
   name: 'text-box',
   methods: {
     sendMessage (event) {
-      const msgInput = this.$refs.msg
+      const msgInput = this.$refs.msg;
+      if (event === undefined) {
+        this.$emit('sendMessage', msgInput.innerText)
+        msgInput.innerText = '';
+        return
+      }
       if (event && event.shiftKey) {
         return
       }
@@ -23,6 +29,11 @@ export default {
         msgInput.innerText = '';
         event.preventDefault();
       }
+    }
+  },
+  watch: {
+    hitSendMessage() {
+      this.sendMessage();
     }
   }
 }

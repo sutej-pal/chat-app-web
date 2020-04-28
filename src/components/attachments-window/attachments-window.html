@@ -6,9 +6,9 @@
             <img class="m-auto" :src="messageObject.attachments.objectUrl" alt="">
         </div>
         <div class="flex items-center p-2 mt-3 rounded text-area-and-controls">
-            <text-box class="w-full" @sendMessage="(msg) => $emit('sendMessage', msg)"></text-box>
+            <text-box class="w-full" @sendMessage="(msg) => $emit('sendMessage', msg)" :hitSendMessage="hitSendMessage"></text-box>
             <button class="message-send px-2 ml-3">
-                <i class="fa fa-send text-xl" aria-hidden="true" @click="$emit('sendMessage', '')"></i>
+                <i class="fa fa-send text-xl" aria-hidden="true" @click="hitSendMessage = !hitSendMessage"></i>
             </button>
         </div>
     </div>

@@ -5,6 +5,11 @@ export default {
   components: {
     'text-box': TextBox
   },
+  data() {
+    return {
+        hitSendMessage: false
+    }
+  },
   methods: {
     adjustHeight(event) {
       // const count = (event.target.value.match(/\n/g) || []).length;
