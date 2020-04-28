@@ -9,7 +9,7 @@
                     <div class="font-semibold">{{sender.name}}</div>
                 </div>
                 <div class="heading-dot relative mr-2">
-                    <i class="fa fa-ellipsis-v text-2xl text-gray-700" aria-hidden="true"
+                    <i class="fa fa-ellipsis-v text-2xl" aria-hidden="true"
                        @click="$refs.userSettings.classList.toggle('hidden')"></i>
                     <div class="absolute bg-white right-0 hidden rounded shadow user-settings z-10"
                          @mouseleave="$refs.userSettings.classList.toggle('hidden')" ref="userSettings">
@@ -59,7 +59,7 @@
             <span class="fa fa-chevron-down icon"></span>
         </span>
         <div class="absolute bottom-0 flex reply sticky w-full justify-around items-center text-gray-500">
-            <div class="reply-emojis px-2 hover:text-gray-600">
+            <div class="reply-emojis px-2">
                 <i class="fa fa-smile-o text-xl"></i>
             </div>
             <div class="reply-main w-full text-gray-700">
@@ -67,9 +67,9 @@
                 <!--                            <textarea name="" placeholder="Type a message" v-model='messageObject.message'-->
                 <!--                                      @keyup.enter="sendMessage"></textarea>-->
             </div>
-            <button class="reply-recording px-2 hover:text-gray-600 focus:outline-none"
+            <button class="reply-attachments px-2 focus:outline-none"
                     @click="$refs.attachment.click()">
-                <i class="fa fa-paperclip text-xl" aria-hidden="true"></i>
+                <i class="fa fa-paperclip" aria-hidden="true"></i>
             </button>
             <input type="file" ref="attachment" class="hidden" @change="addAttachment">
             <!--            <button class="reply-send px-2 hover:text-gray-600">-->
