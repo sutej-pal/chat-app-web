@@ -41,8 +41,8 @@ export default {
     this.scrollToBottom()
   },
   watch: {
-    isScrollDownBtnVisible(newValue) {
-      this.$emit('toggleScrollBottomBtn', newValue);
+    isScrollDownBtnVisible (newValue) {
+      this.$emit('toggleScrollBottomBtn', newValue)
     }
   }
 }
