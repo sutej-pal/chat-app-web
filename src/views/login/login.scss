@@ -1,3 +1,18 @@
 .login-main {
   background: url("../../assets/images/bg-pattern.png");
+
+  .login-loader {
+    height: 4px;
+    background: rgba(65, 184, 131, 0.9);
+    animation: animate-loader 2s ease-in-out;
+
+    @keyframes animate-loader {
+      0% {
+        width: 1%;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+  }
 }

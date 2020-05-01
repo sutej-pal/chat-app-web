@@ -1,0 +1,15 @@
+<div class="attachment-window pt-5">
+    <button class="close-button absolute fa fa-times rounded-full"
+            @click="hideAttachmentsWindow"></button>
+    <div class="container p-3 m-auto">
+        <div class="image-preview">
+            <img class="m-auto" :src="messageObject.attachments.objectUrl" alt="">
+        </div>
+        <div class="flex items-center p-2 mt-3 rounded text-area-and-controls">
+            <text-box class="w-full" @sendMessage="(msg) => $emit('sendMessage', msg)" :hitSendMessage="hitSendMessage"></text-box>
+            <button class="message-send px-2 ml-3">
+                <i class="fa fa-send text-xl" aria-hidden="true" @click="hitSendMessage = !hitSendMessage"></i>
+            </button>
+        </div>
+    </div>
+</div>

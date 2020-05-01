@@ -6,6 +6,9 @@
     background: #eee;
     .heading-dot {
       cursor: pointer;
+      i {
+        @include icon;
+      }
     }
   }
   .user-info {
@@ -76,7 +79,7 @@
     }
   }
   .sidebar-container {
-    min-width: 220px;
+    min-width: 250px;
     .searchBox-inner {
 
       input:focus {
@@ -86,15 +89,15 @@
       }
 
       span.fa-times {
-        right: 3px;
-        margin-top: 4%;
+        right: 5px;
+        margin-top: 7px;
         font-size: 12px;
         cursor: pointer;
+        @include icon;
       }
     }
   }
   .reply {
-    max-height: 100px;
     width: 100%;
     background-color: #f5f1ee;
     padding: 10px 5px 10px 5px !important;
@@ -103,47 +106,42 @@
 
 
     .reply-emojis {
-      padding: 5px !important;
+      i {
+        text-align: center;
+        cursor: pointer;
+        @include icon;
+      }
     }
-
-    .reply-emojis i {
-      text-align: center;
-      padding: 5px 5px 5px 5px !important;
-      color: #93918f;
+    .reply-attachments {
+      @include icon;
+    }
+  }
+  .conversation {
+    .scroll-bottom {
+      position: absolute;
+      bottom: 74px;
+      right: 0;
+      left: 0;
+      margin: auto;
+      height: 40px;
+      width: 40px;
+      color: #35495e;
+      background: rgba(65, 184, 131, 0.6);
+      border-radius: 50px;
+      font-size: 25px;
       cursor: pointer;
-    }
-
-    .reply-recording {
-      padding: 5px !important;
-    }
-
-    .reply-recording i {
-      text-align: center;
-      padding: 5px !important;
-      color: #93918f;
-      cursor: pointer;
-    }
-
-    .reply-send i {
-      text-align: center;
-      padding: 5px !important;
-      cursor: pointer;
-    }
-
-    .reply-main textarea {
-      width: 100%;
-      resize: none;
-      padding: 5px !important;
-      outline: none;
-      border: none;
-      box-shadow: none;
-      height: 100%;
-      font-size: 14px;
-
-      &:focus {
-        outline: none;
-        border: none;
-        box-shadow: none;
+      transition: all .5s;
+      opacity: 0;
+      visibility: hidden;
+      &.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      &:hover {
+        color: white;
+        background: #35495e;
+        box-shadow: 0 3px 12px 2px #0000006e;
+        transform: scale(1.1);
       }
     }
   }

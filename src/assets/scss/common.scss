@@ -12,3 +12,12 @@
     background-color: rgba(0, 0, 0, 0.3);
   }
 }
+$iconColor: #757575;
+$iconHoverColor: #2c3e50;
+@mixin icon {
+  color: $iconColor;
+  transition: all .3s;
+  &:hover {
+    color: $iconHoverColor;
+  }
+}

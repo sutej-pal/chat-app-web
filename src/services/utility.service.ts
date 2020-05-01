@@ -1,3 +1,5 @@
+const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+
 export default class UtilityService {
    public static getUserData() {
     const temp = localStorage.getItem('userData');
@@ -29,5 +31,9 @@ export default class UtilityService {
 
   static getImageUrl (url: string) {
     return process.env.VUE_APP_base_url + url
+  }
+
+  static checkUploadedMediaForImage(file: { type: any }) {
+     return acceptedImageTypes.includes(file.type)
   }
 }

@@ -1,0 +1,72 @@
+@import "../../assets/scss/common.scss";
+
+.attachment-window {
+  $closeButtonColor: rgb(255, 37, 37);
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding-top: 45px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  z-index: 1001;
+
+  .close-button {
+    right: 10px;
+    top: 10px;
+    padding: 5px 7px 5px 9px;
+    color: #fff;
+    transition: border 0.3s, color .3s;
+    border: 2px solid #fff;
+
+    &:hover {
+      border: 2px solid $closeButtonColor;
+      color: $closeButtonColor;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .image-preview {
+    height: 300px;
+
+    img {
+      width: auto;
+      height: 100%;
+    }
+  }
+
+  .text-area-and-controls {
+    .input-box {
+      padding: 8px 20px;
+      border-radius: 25px;
+
+      textarea {
+        //resize: none;
+        font-size: 14px;
+        max-height: 70px;
+        line-height: 20px;
+        @include scrollbar;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+
+    .message-send {
+      background: #41b883;
+      border-radius: 50%;
+      padding: 12px 14px;
+      color: #fff;
+
+      &:hover {
+        background: #35495e;
+      }
+    }
+  }
+}

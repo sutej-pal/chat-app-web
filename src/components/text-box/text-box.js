@@ -1,0 +1,41 @@
+export default {
+  props: ['hitSendMessage'],
+  name: 'text-box',
+  methods: {
+    sendMessage (event) {
+      const msgInput = this.$refs.msg
+      if (event === undefined) {
+        this.$emit('sendMessage', msgInput.innerText)
+        msgInput.innerText = ''
+        return
+      }
+      if (event && event.shiftKey) {
+        return
+      }
+      if (event && event.key === 'Enter' && event.target.innerText === '') {
+        event.preventDefault()
+        return
+      }
+      const regex = new RegExp(/^(\n*)$/g)
+      if (regex.test(msgInput.innerText)) {
+        while (msgInput.firstChild) {
+          msgInput.removeChild(msgInput.lastChild)
+        }
+        return
+      }
+      if (msgInput.innerText !== '') {
+        this.$emit('sendMessage', msgInput.innerText)
+        msgInput.innerText = ''
+        event.preventDefault()
+      }
+    }
+  },
+  mounted () {
+    this.$refs.msg.focus()
+  },
+  watch: {
+    hitSendMessage () {
+      this.sendMessage()
+    }
+  }
+}

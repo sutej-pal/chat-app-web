@@ -1,14 +1,29 @@
-.conversation {
+.conversation-container {
   border-left: 1px solid rgba(0, 0, 0, .08);
   overflow-y: auto;
   .conversation-body {
     .sender, .receiver {
-      padding: 5px 10px;
+      padding: 5px;
       border-radius: 5px;
       width: fit-content;
       max-width: 60%;
       margin: 7px 10px 10px auto;
       text-align: right;
+      .image-holder {
+        height: 200px;
+        min-width: 200px;
+        img {
+          width: auto;
+          height: 100%;
+        }
+      }
+      .text-message {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .status {
+        font-size: 10px;
+      }
     }
 
     .receiver {

@@ -1,57 +1,81 @@
 import Vue from 'vue'
 import _ from 'underscore'
-import io from 'socket.io-client'
 import HttpService from '../../services/http.service.ts'
 import UtilityService from '../../services/utility.service.ts'
 import RecentUserList from '../../components/recent-users-list/recent-users-list.vue'
 import AllUserList from '../../components/all-users-list/all-users-list.vue'
 import ConversationContainer from '../../components/conversation-container/conversation-container.vue'
+import AttachmentsWindow from '../../components/attachments-window/attachments-window.vue'
+import TextBox from '../../components/text-box/text-box.vue'
+import socket from '../../utils/socket'
+import { EventBus, Events } from '../../utils/eventBus'
+
+const socketConn = socket
 
 export default Vue.extend({
   components: {
     'recent-user-list': RecentUserList,
     'all-user-list': AllUserList,
-    'conversation-container': ConversationContainer
+    'conversation-container': ConversationContainer,
+    'attachments-window': AttachmentsWindow,
+    'text-box': TextBox
   },
   data () {
     return {
       searchText: '',
       users: [],
-      message: '',
-      messages: [],
-      socket: io(process.env.VUE_APP_base_url),
+      messageObject: {
+        message: '',
+        attachments: {
+          type: '',
+          file: ''
+        }
+      },
+      messagesList: [],
       receiver: {},
-      sender: {}
+      sender: {},
+      isAttachmentUploadVisible: false,
+      isScrollDownBtnVisible: false
     }
   },
   methods: {
     selectReceiver (receiver) {
-      this.searchText = ''
-      this.receiver = receiver
-      this.getChatHistory()
-      // this.getReceiverStatus();
-    },
-    async sendMessage (event) {
-      if (event && event.shiftKey) {
-        // console.log(event.target.clientHeight);
-        // event.target.style.height = event.target.clientHeight + 25 + 'px'
+      if (this.receiver.id === receiver.id) {
         return
       }
-      if (this.message === '') {
+      this.searchText = '';
+      this.receiver = receiver;
+      this.getChatHistory();
+    },
+    async sendMessage (msg) {
+      this.messageObject.message = msg
+      if (this.messageObject.message === '' && !(this.messageObject.attachments && this.messageObject.attachments.file)) {
         return
       }
       const data = {
         senderId: this.sender.id,
         receiverId: this.receiver.id,
-        message: this.message.trim(),
+        message: this.messageObject.message.trim(),
         createdAt: ''
       }
-      console.log('data', data)
-      this.messages.push(data)
-      this.scrollConversationToBottom()
-      this.socket.emit('SEND_MESSAGE', data)
-      await this.setReceiverOnTopOfList()
-      this.message = ''
+      if (this.messageObject.attachments && this.messageObject.attachments.file) {
+        data.attachments = {
+          type: 'image',
+          file: this.messageObject.attachments.file,
+          fileName: this.messageObject.attachments.file.name
+        }
+      }
+      this.messagesList.push(data);
+      socketConn.emit('send-message', data);
+      await this.setReceiverOnTopOfList();
+      this.messageObject = {
+        message: '',
+        attachments: {
+          type: '',
+          file: ''
+        }
+      }
+      this.isAttachmentUploadVisible = false;
     },
     async setReceiverOnTopOfList () {
       const temp = [...this.users]
@@ -60,14 +84,12 @@ export default Vue.extend({
         await this.getRecentUsers()
         return
       }
-      console.log('index', index)
       temp.splice(index, 1)
       temp.splice(0, 0, this.receiver)
       this.users = temp
     },
     async getRecentUsers () {
       HttpService.get('recent-users', true).then(response => {
-        console.log('users', response.data)
         this.users = response.data.data
         if (response.data.data.length > 0) {
           this.receiver = response.data.data[0]
@@ -82,9 +104,7 @@ export default Vue.extend({
       }
       HttpService.post('chat-history-1', data)
         .then(res => {
-          this.messages = res.data.data
-          console.log('messages', this.messages)
-          this.scrollConversationToBottom()
+          this.messagesList = res.data.data;
         })
     },
     scrollConversationToBottom () {
@@ -104,7 +124,6 @@ export default Vue.extend({
     getReceiverStatus () {
       HttpService.get('user-status')
         .then(res => {
-          console.log('data', res)
           this.receiver = res.data.data[0]
         })
     },
@@ -112,35 +131,49 @@ export default Vue.extend({
       return UtilityService.getImageUrl(url)
     },
     updateMessagesArray (serverMessage) {
-      const index = this.messages.length - 1
+      const index = this.messagesList.length - 1
       if (serverMessage.senderId === this.sender.id) {
         if (index > -1) {
-          this.messages.splice(index, 1)
+          this.messagesList.splice(index, 1)
         }
-        this.messages.push(serverMessage)
-      } else {
-        this.messages.push(serverMessage)
+        this.messagesList.push(serverMessage)
+      } else if (serverMessage.senderId === this.receiver.id) {
+        this.messagesList.push(serverMessage)
       }
-      this.scrollConversationToBottom()
+    },
+    async addAttachment (event) {
+      if (event.target.files && event.target.files[0]) {
+        const file = event.target.files[0]
+        // const object = await UtilityService.onImageUpload(event)
+        this.isAttachmentUploadVisible = true;
+        this.messageObject.attachments = {
+          type: 'image',
+          file: file,
+          objectUrl: URL.createObjectURL(file)
+        }
+      }
+    },
+    scrollToBottom() {
+      document.querySelectorAll('.conversation-body')[0]
+        .lastElementChild.scrollIntoView({behavior: 'smooth'})
     }
   },
   async mounted () {
     this.sender = UtilityService.getUserData()
     await this.getRecentUsers()
-    this.socket.emit('update-user-status', this.sender)
-    this.socket.on('MESSAGE', (message) => {
+    socketConn.emit('update-user-status', this.sender)
+    socketConn.on('message', (message) => {
+      console.log('message', message);
       this.updateMessagesArray(message)
     })
-    this.socket.on('offline-user', (offlineUserData) => {
-      console.log('offline-user', offlineUserData)
+    socketConn.on('offline-user', (offlineUserData) => {
       _.each(this.users, user => {
         if (offlineUserData._id === user.id) {
           user.isActive = offlineUserData.isActive
         }
       })
     })
-    this.socket.on('online-user', (onlineUserData) => {
-      console.log('online-user', onlineUserData)
+    socketConn.on('online-user', (onlineUserData) => {
       _.each(this.users, user => {
         if (onlineUserData.id === user.id) {
           user.isActive = true
