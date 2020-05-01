@@ -137,7 +137,7 @@ export default Vue.extend({
           this.messagesList.splice(index, 1)
         }
         this.messagesList.push(serverMessage)
-      } else {
+      } else if (serverMessage.senderId === this.receiver.id) {
         this.messagesList.push(serverMessage)
       }
     },
@@ -163,6 +163,7 @@ export default Vue.extend({
     await this.getRecentUsers()
     socketConn.emit('update-user-status', this.sender)
     socketConn.on('message', (message) => {
+      console.log('message', message);
       this.updateMessagesArray(message)
     })
     socketConn.on('offline-user', (offlineUserData) => {
