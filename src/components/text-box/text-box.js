@@ -3,37 +3,39 @@ export default {
   name: 'text-box',
   methods: {
     sendMessage (event) {
-      const msgInput = this.$refs.msg;
+      const msgInput = this.$refs.msg
       if (event === undefined) {
         this.$emit('sendMessage', msgInput.innerText)
-        msgInput.innerText = '';
+        msgInput.innerText = ''
         return
       }
       if (event && event.shiftKey) {
         return
       }
       if (event && event.key === 'Enter' && event.target.innerText === '') {
-        event.preventDefault();
+        event.preventDefault()
         return
       }
-      const regex = new RegExp(/^(\n*)$/g);
+      const regex = new RegExp(/^(\n*)$/g)
       if (regex.test(msgInput.innerText)) {
         while (msgInput.firstChild) {
           msgInput.removeChild(msgInput.lastChild)
         }
         return
       }
-      console.log('innerText', msgInput.innerText)
       if (msgInput.innerText !== '') {
         this.$emit('sendMessage', msgInput.innerText)
-        msgInput.innerText = '';
-        event.preventDefault();
+        msgInput.innerText = ''
+        event.preventDefault()
       }
     }
   },
+  mounted () {
+    this.$refs.msg.focus()
+  },
   watch: {
-    hitSendMessage() {
-      this.sendMessage();
+    hitSendMessage () {
+      this.sendMessage()
     }
   }
 }
