@@ -1,6 +1,10 @@
 <div class="dashboard-main">
     <div class="container app m-auto">
         <div class="app-one">
+            <attachments-viewer v-if="enableAttachmentsViewer"
+                                :messageId="propsForAttachmentsViewer.messageId"
+                                :chatRoomId="propsForAttachmentsViewer.chatRoomId"
+                                @toggleVisibility="enableAttachmentsViewer = false"></attachments-viewer>
             <router-view></router-view>
         </div>
     </div>

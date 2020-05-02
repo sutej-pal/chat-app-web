@@ -1,14 +1,15 @@
 <template>
-  <div class="main-container">
+  <div class="main-container" v-if="mediaList.length > 0">
     <button class="close-button absolute fa fa-times rounded-full" @click="$emit('toggleVisibility')"></button>
     <div class="media-viewer">
       <div class="media-preview h-full py-5">
-        <img class="h-full w-auto m-auto" :src="activeMedia" alt="">
+        <img class="h-full w-auto m-auto" :src="getImageUrl(activeMedia.attachments.file)" alt="">
       </div>
     </div>
     <div class="border-gray-800 border-t flex flex-row media-list overflow-auto pt-2">
-      <div class="media-thumbnail h-full p-2 flex-shrink-0 whitespace-normal" v-for="(x, index) in media" :key="index">
-        <img class="h-full w-auto m-auto" @click="activeMedia = x" :src="x" alt="">
+      <div class="media-thumbnail h-full p-2 flex-shrink-0 whitespace-normal" v-for="(x, index) in mediaList"
+           :key="index">
+        <img class="h-full w-auto m-auto" @click="activeMedia = x" :src="getImageUrl(x.attachments.file)" alt="">
       </div>
     </div>
   </div>
@@ -17,29 +18,37 @@
 <script>
   import _ from 'underscore'
   import UtilityService from '../../services/utility.service'
+  import HttpService from '../../services/http.service'
 
   export default {
     name: 'attachments-viewer',
-    props: ['messagesList'],
+    props: ['messagesList', 'messageId', 'chatRoomId'],
     data () {
       return {
-        media: [],
+        mediaList: [],
         activeMedia: ''
       }
     },
     methods: {
       getMedia () {
-        _.each(this.messagesList, (message) => {
-          console.log('hi')
-          if (message.attachments && message.attachments.file) {
-            this.media.push(UtilityService.getImageUrl(message.attachments.file))
+        HttpService.get('get-chat-room-media/' + this.chatRoomId)
+          .then((res) => {
+            this.mediaList = res.data.data
+            this.setActiveMedia();
+          })
+      },
+      setActiveMedia () {
+        _.each(this.mediaList, media => {
+          if (media._id === this.messageId) {
+            this.activeMedia = media
           }
         })
-        this.activeMedia = this.media[this.media.length - 1]
+      },
+      getImageUrl (url) {
+        return UtilityService.getImageUrl(url)
       }
     },
     mounted () {
-      console.log('messagesList', this.messagesList)
       this.getMedia()
     }
   }

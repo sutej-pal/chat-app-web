@@ -1,6 +1,4 @@
 <div class="flex chat-main h-full">
-    <attachments-viewer :messagesList="messagesList" v-if="isAttachmentsViewerVisible"
-                        @toggleVisibility="isAttachmentsViewerVisible = false"></attachments-viewer>
     <div class="sidebar-container w-1/4 bg-green-200 h-full">
         <div class="flex flex-col h-full">
             <div class="flex justify-between items-center user-info header">
@@ -53,9 +51,8 @@
                 </div>
             </router-link>
         </div>
-        <conversation-container :conversation="messagesList" :receiver="receiver"
+        <conversation-container :chatRoomId="chatRoom._id" :conversation="chatRoom.messages" :receiver="receiver"
                                 @toggleScrollBottomBtn="(data) => isScrollDownBtnVisible = data"
-                                @showAttachmentsViewer="isAttachmentsViewerVisible = true"
         ></conversation-container>
         <span @click="scrollToBottom()"
               :class="{'active': isScrollDownBtnVisible}"
@@ -68,17 +65,12 @@
             </div>
             <div class="reply-main w-full text-gray-700">
                 <text-box @sendMessage="(msg) => sendMessage(msg)"></text-box>
-                <!--                            <textarea name="" placeholder="Type a message" v-model='messageObject.message'-->
-                <!--                                      @keyup.enter="sendMessage"></textarea>-->
             </div>
             <button class="reply-attachments px-2 focus:outline-none"
                     @click="$refs.attachment.click()">
                 <i class="fa fa-paperclip" aria-hidden="true"></i>
             </button>
             <input type="file" ref="attachment" class="hidden" @change="addAttachment">
-            <!--            <button class="reply-send px-2 hover:text-gray-600">-->
-            <!--                <i class="fa fa-send text-xl" aria-hidden="true" @click="sendMsgBtnClicked"></i>-->
-            <!--            </button>-->
         </div>
     </div>
     <attachments-window v-if="isAttachmentUploadVisible"

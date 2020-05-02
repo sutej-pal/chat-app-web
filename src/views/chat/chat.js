@@ -9,7 +9,6 @@ import AttachmentsWindow from '../../components/attachments-window/attachments-w
 import AttachmentsViewer from '../../components/attachments-viewer/attachments-viewer.vue'
 import TextBox from '../../components/text-box/text-box.vue'
 import socket from '../../utils/socket'
-import { EventBus, Events } from '../../utils/eventBus'
 
 const socketConn = socket
 
@@ -33,7 +32,9 @@ export default Vue.extend({
           file: ''
         }
       },
-      messagesList: [],
+      chatRoom: {
+        messages: []
+      },
       receiver: {},
       sender: {},
       isAttachmentUploadVisible: false,
@@ -68,7 +69,7 @@ export default Vue.extend({
           fileName: this.messageObject.attachments.file.name
         }
       }
-      this.messagesList.push(data);
+      this.chatRoom.messages.push(data);
       socketConn.emit('send-message', data);
       await this.setReceiverOnTopOfList();
       this.messageObject = {
@@ -107,47 +108,30 @@ export default Vue.extend({
       }
       HttpService.post('chat-history-1', data)
         .then(res => {
-          this.messagesList = res.data.data;
+          this.chatRoom = res.data.data
         })
-    },
-    scrollConversationToBottom () {
-      setTimeout(() => {
-        const element = document.getElementById('conversation-container')
-        element.scrollTop = element.scrollHeight
-      }, 50)
-    },
-    textAreaAdjust (event) {
-      event.target.style.height = '1px'
-      event.target.style.height = (25 + event.target.scrollHeight) + 'px'
     },
     async logOut () {
       localStorage.clear()
       await this.$router.push({ path: '/' })
     },
-    getReceiverStatus () {
-      HttpService.get('user-status')
-        .then(res => {
-          this.receiver = res.data.data[0]
-        })
-    },
     getImageUrl (url) {
       return UtilityService.getImageUrl(url)
     },
     updateMessagesArray (serverMessage) {
-      const index = this.messagesList.length - 1
+      const index = this.chatRoom.messages.length - 1
       if (serverMessage.senderId === this.sender.id) {
         if (index > -1) {
-          this.messagesList.splice(index, 1)
+          this.chatRoom.messages.splice(index, 1)
         }
-        this.messagesList.push(serverMessage)
+        this.chatRoom.messages.push(serverMessage)
       } else if (serverMessage.senderId === this.receiver.id) {
-        this.messagesList.push(serverMessage)
+        this.chatRoom.messages.push(serverMessage)
       }
     },
     async addAttachment (event) {
       if (event.target.files && event.target.files[0]) {
         const file = event.target.files[0]
-        // const object = await UtilityService.onImageUpload(event)
         this.isAttachmentUploadVisible = true;
         this.messageObject.attachments = {
           type: 'image',

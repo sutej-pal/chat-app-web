@@ -1,9 +1,10 @@
 import moment from 'moment'
 import UtilityService from '../../services/utility.service'
+import { EventBus, Events } from '../../utils/eventBus'
 
 export default {
   name: 'conversation-container',
-  props: ['conversation', 'receiver'],
+  props: ['conversation', 'receiver', 'chatRoomId'],
   data () {
     return {
       scrollHeight: '',
@@ -34,7 +35,11 @@ export default {
       this.isScrollDownBtnVisible = event.target.scrollHeight - (event.target.scrollTop + event.target.clientHeight) > 200
     },
     showAttachments (messageId) {
-      this.$emit('showAttachmentsViewer', messageId);
+      const object = {
+        messageId,
+        chatRoomId: this.chatRoomId
+      }
+      EventBus.$emit(Events.enableAttachmentsViewer, object);
     }
   },
   mounted () {
