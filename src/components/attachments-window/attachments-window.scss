@@ -1,8 +1,6 @@
 @import "../../assets/scss/common.scss";
 
 .attachment-window {
-  $closeButtonColor: rgb(255, 37, 37);
-
   position: absolute;
   top: 0;
   right: 0;
@@ -14,21 +12,7 @@
   z-index: 1001;
 
   .close-button {
-    right: 10px;
-    top: 10px;
-    padding: 5px 7px 5px 9px;
-    color: #fff;
-    transition: border 0.3s, color .3s;
-    border: 2px solid #fff;
-
-    &:hover {
-      border: 2px solid $closeButtonColor;
-      color: $closeButtonColor;
-    }
-
-    &:focus {
-      outline: none;
-    }
+    @include close-button;
   }
 
   .image-preview {

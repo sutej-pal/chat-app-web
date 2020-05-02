@@ -31,7 +31,10 @@ export default {
       return UtilityService.getImageUrl(url)
     },
     handleScroll (event) {
-      this.isScrollDownBtnVisible = event.target.scrollHeight - (event.target.scrollTop + event.target.clientHeight) > 200;
+      this.isScrollDownBtnVisible = event.target.scrollHeight - (event.target.scrollTop + event.target.clientHeight) > 200
+    },
+    showAttachments (messageId) {
+      this.$emit('showAttachmentsViewer', messageId);
     }
   },
   mounted () {

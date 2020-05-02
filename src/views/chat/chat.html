@@ -1,4 +1,6 @@
 <div class="flex chat-main h-full">
+    <attachments-viewer :messagesList="messagesList" v-if="isAttachmentsViewerVisible"
+                        @toggleVisibility="isAttachmentsViewerVisible = false"></attachments-viewer>
     <div class="sidebar-container w-1/4 bg-green-200 h-full">
         <div class="flex flex-col h-full">
             <div class="flex justify-between items-center user-info header">
@@ -52,7 +54,9 @@
             </router-link>
         </div>
         <conversation-container :conversation="messagesList" :receiver="receiver"
-                                @toggleScrollBottomBtn="(data) => isScrollDownBtnVisible = data"></conversation-container>
+                                @toggleScrollBottomBtn="(data) => isScrollDownBtnVisible = data"
+                                @showAttachmentsViewer="isAttachmentsViewerVisible = true"
+        ></conversation-container>
         <span @click="scrollToBottom()"
               :class="{'active': isScrollDownBtnVisible}"
               class="scroll-bottom flex justify-center items-center">

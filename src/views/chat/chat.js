@@ -6,6 +6,7 @@ import RecentUserList from '../../components/recent-users-list/recent-users-list
 import AllUserList from '../../components/all-users-list/all-users-list.vue'
 import ConversationContainer from '../../components/conversation-container/conversation-container.vue'
 import AttachmentsWindow from '../../components/attachments-window/attachments-window.vue'
+import AttachmentsViewer from '../../components/attachments-viewer/attachments-viewer.vue'
 import TextBox from '../../components/text-box/text-box.vue'
 import socket from '../../utils/socket'
 import { EventBus, Events } from '../../utils/eventBus'
@@ -17,6 +18,7 @@ export default Vue.extend({
     'recent-user-list': RecentUserList,
     'all-user-list': AllUserList,
     'conversation-container': ConversationContainer,
+    'attachments-viewer': AttachmentsViewer,
     'attachments-window': AttachmentsWindow,
     'text-box': TextBox
   },
@@ -35,7 +37,8 @@ export default Vue.extend({
       receiver: {},
       sender: {},
       isAttachmentUploadVisible: false,
-      isScrollDownBtnVisible: false
+      isScrollDownBtnVisible: false,
+      isAttachmentsViewerVisible: false
     }
   },
   methods: {
