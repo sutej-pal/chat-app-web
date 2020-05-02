@@ -8,14 +8,14 @@ export default Vue.extend({
   },
   data () {
     return {
-      enableAttachmentsViewer: false,
+      isAttachmentsViewerVisible: false,
       propsForAttachmentsViewer: {}
     }
   },
   methods: {},
   mounted () {
     EventBus.$on(Events.enableAttachmentsViewer, (data) => {
-      this.enableAttachmentsViewer = true;
+      this.isAttachmentsViewerVisible = true;
       this.propsForAttachmentsViewer.messageId = data.messageId;
       this.propsForAttachmentsViewer.chatRoomId = data.chatRoomId
     })

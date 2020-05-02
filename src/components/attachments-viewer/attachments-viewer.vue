@@ -6,10 +6,10 @@
         <img class="h-full w-auto m-auto" :src="getImageUrl(activeMedia.attachments.file)" alt="">
       </div>
     </div>
-    <div class="border-gray-800 border-t flex flex-row media-list overflow-auto pt-2">
-      <div class="media-thumbnail h-full p-2 flex-shrink-0 whitespace-normal" v-for="(x, index) in mediaList"
+    <div class="border-gray-800 border-t flex media-list overflow-auto pt-2">
+      <div class="media-thumbnail h-full flex-grow-0 flex-shrink-0" v-for="(x, index) in mediaList"
            :key="index">
-        <img class="h-full w-auto m-auto" @click="activeMedia = x" :src="getImageUrl(x.attachments.file)" alt="">
+        <img class="h-full p-1" @click="activeMedia = x" :src="getImageUrl(x.attachments.file)" alt="">
       </div>
     </div>
   </div>
@@ -72,7 +72,7 @@
     z-index: 1001;
 
     .media-viewer {
-      height: 70%;
+      height: 80%;
 
       .media-preview {
       }
@@ -80,9 +80,10 @@
     }
 
     .media-list {
-      height: 30%;
+      height: 20%;
 
       .media-thumbnail {
+        width: fit-content;
         img {
           cursor: pointer;
         }

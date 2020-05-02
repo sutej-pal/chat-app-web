@@ -7,8 +7,8 @@
         </div>
         <div class="flex items-center p-2 mt-3 rounded text-area-and-controls">
             <text-box class="w-full" @sendMessage="(msg) => $emit('sendMessage', msg)" :hitSendMessage="hitSendMessage"></text-box>
-            <button class="message-send px-2 ml-3">
-                <i class="fa fa-send text-xl" aria-hidden="true" @click="hitSendMessage = !hitSendMessage"></i>
+            <button class="message-send px-2 ml-3" @click="hitSendMessage = !hitSendMessage">
+                <i class="fa fa-send text-xl" aria-hidden="true"></i>
             </button>
         </div>
     </div>
