@@ -1,0 +1,24 @@
+<div class="main-container" v-if="mediaList.length > 0">
+    <button class="close-button absolute fa fa-times rounded-full" @click="$emit('toggleVisibility')"></button>
+    <div class="media-viewer">
+        <div class="media-preview flex items-center h-full px-3 py-5">
+            <button class="btn" @click="activeIndex -= 1">prev</button>
+            <img class="h-full w-auto m-auto" :src="getImageUrl(mediaList[activeIndex].attachments.file)" alt="">
+            <button class="btn" @click="activeIndex += 1">next</button>
+        </div>
+    </div>
+    <div class="media-list overflow-hidden" ref="mediaList">
+        <div class="relative flex flex-row">
+            <div class="prefix"></div>
+            <div class="image" :class="activeIndex === index ? 'active' : 'inactive'" v-for="(x, index) in mediaList"
+                 :key="index" @click="setActiveMedia(index)">
+                <div class="w-auto h-full mx-2" :style="{background: `url(${getImageUrl(x.attachments.file)})`, 'background-size': 'cover',
+                            'background-position': 'top',
+                            'background-origin': 'initial'}">
+                    <div class="backdrop h-full w-full"></div>
+                </div>
+            </div>
+            <div class="suffix"></div>
+        </div>
+    </div>
+</div>
