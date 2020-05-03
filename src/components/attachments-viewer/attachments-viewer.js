@@ -29,6 +29,9 @@ export default {
         })
     },
     setActiveMedia (index) {
+      if (index > this.mediaList.length - 1 || index < 0) {
+        return
+      }
       this.activeIndex = index
       this.$refs.mediaList.scrollLeft = 100 * index
     },
