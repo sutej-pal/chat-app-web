@@ -1,15 +1,10 @@
 import _ from 'underscore'
 import UtilityService from '../../services/utility.service'
 import HttpService from '../../services/http.service'
-import { Carousel, Slide } from 'vue-carousel'
 
 export default {
   name: 'attachments-viewer',
   props: ['messagesList', 'messageId', 'chatRoomId'],
-  components: {
-    Carousel,
-    Slide
-  },
   data () {
     return {
       mediaList: [],
@@ -27,21 +22,38 @@ export default {
               this.activeIndex = index
               this.activeMedia = media
               this.$nextTick(() => {
-                this.$refs.mediaList.scrollLeft = 100 * index;
-              });
+                this.$refs.mediaList.scrollLeft = 100 * index
+              })
             }
           })
         })
     },
     setActiveMedia (index) {
       this.activeIndex = index
-      this.$refs.mediaList.scrollLeft = 100 * index;
+      this.$refs.mediaList.scrollLeft = 100 * index
     },
     getImageUrl (url) {
       return UtilityService.getImageUrl(url)
+    },
+    handleKeypressEvents (e) {
+      console.log('handleKeypressEvents', e);
+      if (e.keyCode === 27) {
+        this.$emit('toggleVisibility');
+      }
+      if (e.keyCode === 37) {
+        this.setActiveMedia(this.activeIndex - 1)
+      }
+      if (e.keyCode === 39) {
+        this.setActiveMedia(this.activeIndex + 1)
+      }
     }
   },
   mounted () {
     this.getMedia()
+    window.addEventListener('keydown', this.handleKeypressEvents)
+  },
+  destroyed () {
+    window.removeEventListener('keydown', this.handleKeypressEvents)
+    console.log('destroyed')
   }
 }
