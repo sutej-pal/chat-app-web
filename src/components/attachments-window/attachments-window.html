@@ -2,8 +2,11 @@
     <button class="close-button absolute fa fa-times rounded-full"
             @click="hideAttachmentsWindow"></button>
     <div class="container p-3 m-auto">
-        <div class="image-preview">
-            <img class="m-auto" :src="messageObject.attachments.objectUrl" alt="">
+        <div class="media-preview">
+            <img v-if="messageObject.attachments.type === 'image'" class="m-auto"
+                 :src="messageObject.attachments.objectUrl" alt="">
+            <video v-if="messageObject.attachments.type === 'video'" class="border-0 m-auto w-auto"
+                   controls :src="messageObject.attachments.objectUrl"></video>
         </div>
         <div class="flex items-center p-2 mt-3 rounded text-area-and-controls">
             <text-box class="w-full" @sendMessage="(msg) => $emit('sendMessage', msg)" :hitSendMessage="hitSendMessage"></text-box>

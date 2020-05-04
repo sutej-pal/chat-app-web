@@ -1,5 +1,5 @@
 import HttpService from '../../services/http.service'
-import UtilityService from '../../services/utility.service'
+import { UtilityService } from '../../services/utility.service'
 
 export default {
   data () {

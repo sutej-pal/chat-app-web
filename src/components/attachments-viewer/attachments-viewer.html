@@ -1,0 +1,33 @@
+<div class="main-container" v-if="mediaList.length > 0">
+    <button class="close-button absolute fa fa-times rounded-full" @click="$emit('toggleVisibility')"></button>
+    <div class="media-viewer">
+        <div class="media-preview flex items-center h-full px-3 py-5">
+            <button :class="{'disabled': activeIndex === 0}" class="btn rounded-full hover:shadow-md prev" @click="setActiveMedia(activeIndex - 1)">
+                <span></span>
+            </button>
+            <img v-if="mediaList[activeIndex].attachments.fileType === 'image'"  class="h-full w-auto m-auto" :src="getImageUrl(mediaList[activeIndex].attachments.file)" alt="">
+            <video controls v-if="mediaList[activeIndex].attachments.fileType === 'video'" class="h-full w-auto m-auto" :src="getImageUrl(mediaList[activeIndex].attachments.file)"></video>
+            <button :class="{'disabled': activeIndex === mediaList.length - 1}" class="btn rounded-full hover:shadow-md next" @click="setActiveMedia(activeIndex + 1)">
+                <span></span>
+            </button>
+        </div>
+    </div>
+    <div class="media-list flex items-center overflow-auto" ref="mediaList">
+        <div class="relative flex flex-row">
+            <div class="prefix"></div>
+            <div class="image" :class="activeIndex === index ? 'active' : 'inactive'" v-for="(x, index) in mediaList"
+                 :key="index" @click="setActiveMedia(index)">
+                <div class="w-auto h-full mx-2 relative" :style="{background: `url(${getImageUrl(x.attachments.thumb)})`, 'background-size': 'cover',
+                            'background-position': 'top',
+                            'background-origin': 'initial'}">
+                    <div class="backdrop h-full w-full"></div>
+                    <div v-if="x.attachments.fileType === 'video'"
+                         class="play-button absolute bottom-0 left-0 right-0 text-white top-0 flex items-center justify-center">
+                        <span class="fa fa-play border-2 rounded-full"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="suffix"></div>
+        </div>
+    </div>
+</div>

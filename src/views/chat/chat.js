@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import _ from 'underscore'
 import HttpService from '../../services/http.service.ts'
-import UtilityService from '../../services/utility.service.ts'
+import { UtilityService, ChatRoom } from '../../services/utility.service.ts'
 import RecentUserList from '../../components/recent-users-list/recent-users-list.vue'
 import AllUserList from '../../components/all-users-list/all-users-list.vue'
 import ConversationContainer from '../../components/conversation-container/conversation-container.vue'
@@ -47,9 +47,9 @@ export default Vue.extend({
       if (this.receiver.id === receiver.id) {
         return
       }
-      this.searchText = '';
-      this.receiver = receiver;
-      this.getChatHistory();
+      this.searchText = ''
+      this.receiver = receiver
+      this.getChatHistory()
     },
     async sendMessage (msg) {
       this.messageObject.message = msg
@@ -64,14 +64,14 @@ export default Vue.extend({
       }
       if (this.messageObject.attachments && this.messageObject.attachments.file) {
         data.attachments = {
-          type: 'image',
+          type: this.messageObject.attachments.type,
           file: this.messageObject.attachments.file,
           fileName: this.messageObject.attachments.file.name
         }
       }
-      this.chatRoom.messages.push(data);
-      socketConn.emit('send-message', data);
-      await this.setReceiverOnTopOfList();
+      this.chatRoom.messages.push(data)
+      socketConn.emit('send-message', data)
+      await this.setReceiverOnTopOfList()
       this.messageObject = {
         message: '',
         attachments: {
@@ -79,7 +79,7 @@ export default Vue.extend({
           file: ''
         }
       }
-      this.isAttachmentUploadVisible = false;
+      this.isAttachmentUploadVisible = false
     },
     async setReceiverOnTopOfList () {
       const temp = [...this.users]
@@ -108,7 +108,11 @@ export default Vue.extend({
       }
       HttpService.post('chat-history-1', data)
         .then(res => {
-          this.chatRoom = res.data.data
+          if (res.data.data.length === 0) {
+            this.chatRoom = new ChatRoom();
+          } else {
+            this.chatRoom = res.data.data
+          }
         })
     },
     async logOut () {
@@ -118,7 +122,7 @@ export default Vue.extend({
     getImageUrl (url) {
       return UtilityService.getImageUrl(url)
     },
-    updateMessagesArray (serverMessage) {
+    async updateMessagesArray (serverMessage) {
       const index = this.chatRoom.messages.length - 1
       if (serverMessage.senderId === this.sender.id) {
         if (index > -1) {
@@ -128,21 +132,21 @@ export default Vue.extend({
       } else if (serverMessage.senderId === this.receiver.id) {
         this.chatRoom.messages.push(serverMessage)
       }
+      await this.setReceiverOnTopOfList();
     },
     async addAttachment (event) {
-      if (event.target.files && event.target.files[0]) {
+      const type = await UtilityService.getAttachmentFileType(event);
+      if (type) {
         const file = event.target.files[0]
-        this.isAttachmentUploadVisible = true;
+        this.isAttachmentUploadVisible = true
         this.messageObject.attachments = {
-          type: 'image',
-          file: file,
-          objectUrl: URL.createObjectURL(file)
+          type, file, objectUrl: URL.createObjectURL(file)
         }
       }
     },
-    scrollToBottom() {
+    scrollToBottom () {
       document.querySelectorAll('.conversation-body')[0]
-        .lastElementChild.scrollIntoView({behavior: 'smooth'})
+        .lastElementChild.scrollIntoView({ behavior: 'smooth' })
     }
   },
   async mounted () {
@@ -150,7 +154,6 @@ export default Vue.extend({
     await this.getRecentUsers()
     socketConn.emit('update-user-status', this.sender)
     socketConn.on('message', (message) => {
-      console.log('message', message);
       this.updateMessagesArray(message)
     })
     socketConn.on('offline-user', (offlineUserData) => {

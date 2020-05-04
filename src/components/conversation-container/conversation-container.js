@@ -1,5 +1,5 @@
 import moment from 'moment'
-import UtilityService from '../../services/utility.service'
+import { UtilityService } from '../../services/utility.service'
 import { EventBus, Events } from '../../utils/eventBus'
 
 export default {
@@ -28,7 +28,7 @@ export default {
       this.scrollHeight = element.scrollHeight
       element.scrollTop = element.scrollHeight
     },
-    getImageUrl (url) {
+    getMediaUrl (url) {
       return UtilityService.getImageUrl(url)
     },
     handleScroll (event) {
