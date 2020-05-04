@@ -23,7 +23,6 @@ export class UtilityService {
         resolve({file, base64String})
       };
       reader.onerror = function (error) {
-        console.log('Error: ', error);
         reject(error);
       };
     })
