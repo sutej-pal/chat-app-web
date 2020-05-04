@@ -118,6 +118,11 @@
       &.inactive .backdrop {
         background-color: rgba(0, 0, 0, .5);
       }
+      .play-button {
+        span {
+          padding: 11px 10px 11px 14px;
+        }
+      }
 
     }
 

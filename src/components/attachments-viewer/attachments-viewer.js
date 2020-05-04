@@ -1,5 +1,5 @@
 import _ from 'underscore'
-import UtilityService from '../../services/utility.service'
+import { UtilityService } from '../../services/utility.service'
 import HttpService from '../../services/http.service'
 
 export default {
