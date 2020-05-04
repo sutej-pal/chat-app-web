@@ -5,7 +5,7 @@ import SignUp from '../views/sign-up/sign-up.vue'
 import Login from '../views/login/login.vue'
 import NotFound from '../views/not-found/not-found.vue'
 import UserVerification from '../views/verify-user/verify-user.vue'
-import UtilityService from "@/services/utility.service";
+import { UtilityService } from "@/services/utility.service";
 
 Vue.use(VueRouter);
 

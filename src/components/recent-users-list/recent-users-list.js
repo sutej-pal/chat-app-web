@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import moment from 'moment'
-import UtilityService from '../../services/utility.service'
+import { UtilityService } from '../../services/utility.service'
 
 export default Vue.component('user-list', {
   props: ['users', 'receiver', 'searchText'],

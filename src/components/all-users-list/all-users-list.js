@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import HttpService from '../../services/http.service'
-import UtilityService from '../../services/utility.service'
+import { UtilityService } from '../../services/utility.service'
 
 export default Vue.component('all-users-list', {
   props: ['searchText'],
@@ -15,7 +15,6 @@ export default Vue.component('all-users-list', {
     },
     async getAllUsers() {
       HttpService.get('all-users', true).then(response => {
-        console.log('users', response.data)
         this.allUsers = response.data.data;
       });
     },

@@ -39,7 +39,6 @@ export default {
       return UtilityService.getImageUrl(url)
     },
     handleKeypressEvents (e) {
-      console.log('handleKeypressEvents', e);
       if (e.keyCode === 27) {
         this.$emit('toggleVisibility');
       }
@@ -57,6 +56,5 @@ export default {
   },
   destroyed () {
     window.removeEventListener('keydown', this.handleKeypressEvents)
-    console.log('destroyed')
   }
 }
