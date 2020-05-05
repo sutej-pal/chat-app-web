@@ -1,10 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/dashboard/dashboard.vue'
-import SignUp from '../views/sign-up/sign-up.vue'
-import Login from '../views/login/login.vue'
-import NotFound from '../views/not-found/not-found.vue'
-import UserVerification from '../views/verify-user/verify-user.vue'
 import { UtilityService } from "@/services/utility.service";
 
 Vue.use(VueRouter);
@@ -13,7 +8,7 @@ const routes = [
   {
     path: '/',
     name: 'Login',
-    component: Login,
+    component: () => import('../views/login/login.vue'),
     meta: {
       title: 'Login'
     }
@@ -21,12 +16,12 @@ const routes = [
   {
     path: '/sign-up',
     name: 'SignUp',
-    component: SignUp
+    component: () => import('../views/sign-up/sign-up.vue')
   },
   {
     path: '/home',
     name: 'Home',
-    component: Home,
+    component: () => import('../views/dashboard/dashboard.vue'),
     meta: {
       auth: true
     },
@@ -49,7 +44,7 @@ const routes = [
   {
     path: '/verify-user',
     name: 'UserVerification',
-    component: UserVerification
+    component: () => import('../views/verify-user/verify-user.vue')
   },
   {
     path: '/about',
@@ -63,7 +58,7 @@ const routes = [
     // will match everything
     path: '*',
     name: 'NotFound',
-    component: NotFound
+    component: () => import('../views/not-found/not-found.vue')
   }
 ];
 
