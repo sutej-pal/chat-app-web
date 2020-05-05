@@ -8,7 +8,7 @@
       <i class="fa fa-smile-o text-xl"></i>
     </div>
     <div class="text-box-container w-full">
-      <div contenteditable="true" class="edit" ref='msg' @keydown.enter="sendMessage"></div>
+      <div contenteditable="true" spellcheck="value" class="edit" ref='msg' @keydown.enter="sendMessage"></div>
     </div>
   </div>
 </template>
