@@ -33,7 +33,7 @@
                     <span class="fa fa-times absolute" @click="searchText = ''"></span>
                 </div>
             </div>
-            <recent-user-list v-if="searchText === ''" :users="users" :receiver="receiver" :searchText="searchText"
+            <recent-user-list v-if="searchText === ''" :users="recentContacts" :receiver="receiver" :searchText="searchText"
                               @newReceiver="selectReceiver"/>
             <all-user-list v-else :searchText="searchText" @newReceiver="selectReceiver"/>
         </div>
