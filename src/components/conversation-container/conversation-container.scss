@@ -1,6 +1,50 @@
 .conversation-container {
   border-left: 1px solid rgba(0, 0, 0, .08);
   overflow-y: auto;
+
+  .new-messages {
+    bottom: 70px;
+    right: 15px;
+    height: 30px;
+    width: 30px;
+    padding: 5px 10px 1px;
+    cursor: pointer;
+    &:hover {
+      span {
+        border-bottom: 1px solid #000000;
+        border-right: 1px solid #000000;
+      }
+    }
+    span {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-bottom: 1px solid white;
+      border-right: 1px solid white;
+      transform: rotate(45deg);
+      transition: all .3s;
+    }
+    span:nth-child(2) {
+      top: 10px;
+    }
+
+    //&:after {
+    //  content: '';
+    //  position: absolute;
+    //  top:10px;
+    //  width: 10px;
+    //  height: 10px;
+    //  border-bottom: 1px solid white;
+    //  border-right: 1px solid white;
+    //  transform: rotate(45deg);
+    //  transition: all 1s;
+    //  &:hover {
+    //    border-bottom: 1px solid #000000;
+    //    border-right: 1px solid #000000;
+    //  }
+    //}
+  }
+
   .conversation-body {
     .sender, .receiver {
       padding: 5px;
@@ -9,23 +53,28 @@
       max-width: 60%;
       margin: 7px 10px 10px auto;
       text-align: right;
+
       .image-holder {
         height: 200px;
         min-width: 200px;
+
         img {
           width: auto;
           height: 100%;
         }
+
         .play-button {
           position: absolute;
           top: 35%;
           font-size: 40px;
         }
       }
+
       .text-message {
         white-space: pre-wrap;
         word-break: break-word;
       }
+
       .status {
         font-size: 10px;
       }

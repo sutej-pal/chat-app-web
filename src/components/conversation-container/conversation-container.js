@@ -8,7 +8,8 @@ export default {
   data () {
     return {
       scrollHeight: '',
-      isScrollDownBtnVisible: false
+      isScrollDownBtnVisible: false,
+      newMessages: false
     }
   },
   methods: {
@@ -33,22 +34,45 @@ export default {
     },
     handleScroll (event) {
       this.isScrollDownBtnVisible = event.target.scrollHeight - (event.target.scrollTop + event.target.clientHeight) > 200
+      if (this.newMessages) {
+        this.newMessages = event.target.scrollHeight === (event.target.scrollTop + event.target.clientHeight)
+      }
     },
     showAttachments (messageId) {
       const object = {
         messageId,
         chatRoomId: this.chatRoomId
       }
-      EventBus.$emit(Events.enableAttachmentsViewer, object);
+      EventBus.$emit(Events.enableAttachmentsViewer, object)
+    },
+    showNewMessageIcon() {
+      const ct = document.getElementById('conversation-container')
+      if ((ct.scrollHeight - (ct.scrollTop + ct.clientHeight)) > 200) {
+        this.newMessages = true
+      } else {
+        this.scrollToBottom()
+      }
     }
   },
   mounted () {
+    console.log('mounted')
     this.scrollToBottom()
   },
   updated () {
-    this.scrollToBottom()
+    console.log('updated')
+    const ct = document.getElementById('conversation-container')
+    if ((ct.scrollHeight - (ct.scrollTop + ct.clientHeight)) > 200) {
+      this.newMessages = true
+    } else {
+      this.scrollToBottom()
+    }
   },
   watch: {
+    // conversation (newValue, oldValue) {
+    //   console.log('newValue', this.conversation);
+    //   console.log('oldValue', oldValue);
+    //   this.showNewMessageIcon()
+    // },
     isScrollDownBtnVisible (newValue) {
       this.$emit('toggleScrollBottomBtn', newValue)
     }

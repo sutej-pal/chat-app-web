@@ -39,7 +39,8 @@ export default Vue.extend({
       sender: {},
       isAttachmentUploadVisible: false,
       isScrollDownBtnVisible: false,
-      isAttachmentsViewerVisible: false
+      isAttachmentsViewerVisible: false,
+      isChatHistoryFetched: false
     }
   },
   methods: {
@@ -70,7 +71,8 @@ export default Vue.extend({
         }
       }
       this.chatRoom.messages.push(data)
-      socketConn.emit('send-message', data)
+      socketConn.emit('send-message', data);
+      this.scrollToBottom();
       this.messageObject = {
         message: '',
         attachments: {
@@ -108,6 +110,7 @@ export default Vue.extend({
       }
       HttpService.post('chat-history-1', data)
         .then(res => {
+          this.isChatHistoryFetched = true;
           if (res.data.data.length === 0) {
             this.chatRoom = new ChatRoom();
           } else {

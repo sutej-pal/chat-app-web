@@ -51,7 +51,7 @@
                 </div>
             </router-link>
         </div>
-        <conversation-container :chatRoomId="chatRoom._id" :conversation="chatRoom.messages" :receiver="receiver"
+        <conversation-container v-if="isChatHistoryFetched" :chatRoomId="chatRoom._id" :conversation="chatRoom.messages" :receiver="receiver"
                                 @toggleScrollBottomBtn="(data) => isScrollDownBtnVisible = data"
         ></conversation-container>
         <span @click="scrollToBottom()"

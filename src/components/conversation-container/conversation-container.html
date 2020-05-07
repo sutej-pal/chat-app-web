@@ -1,4 +1,9 @@
 <div class="conversation-container overflow-auto h-full" id="conversation-container" @scroll="handleScroll">
+    <div v-if="newMessages" class="absolute bg-green-600 new-messages rounded-full"
+    @click="$parent.scrollToBottom()">
+        <span></span>
+        <span></span>
+    </div>
     <div class="conversation-body" ref="conversation-body">
         <div :class="{
                 'sender bg-green-200': message.senderId !== receiver.id,
@@ -14,7 +19,7 @@
                     <span class="fa fa-play p-4 rounded-full border-2 text-white"></span>
                 </div>
             </div>
-            <div class="text-message text-left text-sm text-gray-800" v-html="message.message"></div>
+            <div class="text-message text-left text-sm text-gray-800 overflow-hidden" v-html="message.message"></div>
             <div class="status text-right text-xs text-gray-600">
                 <span v-if="checkCreatedAt(message.createdAt)" class="fa fa-check"></span>
                 <span v-else class="fa fa-circle-notch fa-spin"></span>
