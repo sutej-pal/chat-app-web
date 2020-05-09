@@ -52,6 +52,13 @@ export class UtilityService {
       }
     }
   }
+
+  public static scrollToBottomConversation (id: string) {
+    const element: HTMLElement | null = document.getElementById(id);
+    if (element) {
+      element.scrollTop = element?.scrollHeight
+    }
+  }
 }
 
 export class ChatRoom {

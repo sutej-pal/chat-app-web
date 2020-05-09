@@ -20,8 +20,10 @@
                 </div>
             </div>
             <div class="text-message text-left text-sm text-gray-800 overflow-hidden" v-html="message.message"></div>
-            <div class="status text-right text-xs text-gray-600">
-                <span v-if="checkCreatedAt(message.createdAt)" class="fa fa-check"></span>
+            <div class="status text-right text-xs text-gray-600" v-if="message.senderId !== receiver.id">
+                <span v-if="checkCreatedAt(message.createdAt)"
+                      :class="{'text-blue-500 fa-check-double': message.seen, 'fa-check': !message.seen}"
+                      class="fa"></span>
                 <span v-else class="fa fa-circle-notch fa-spin"></span>
             </div>
             <div class="text-right text-xs text-gray-600">{{getMessageTime(message.createdAt)}}</div>

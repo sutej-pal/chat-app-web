@@ -49,8 +49,8 @@ export default Vue.extend({
         return
       }
       this.searchText = ''
-      this.receiver = receiver;
-      this.getChatHistory();
+      this.receiver = receiver
+      this.getChatHistory()
     },
     async sendMessage (msg) {
       this.messageObject.message = msg
@@ -71,8 +71,8 @@ export default Vue.extend({
         }
       }
       this.chatRoom.messages.push(data)
-      socketConn.emit('send-message', data);
-      this.scrollToBottom();
+      socketConn.emit('send-message', data)
+      this.scrollToBottom()
       this.messageObject = {
         message: '',
         attachments: {
@@ -110,9 +110,9 @@ export default Vue.extend({
       }
       HttpService.post('chat-history-1', data)
         .then(res => {
-          this.isChatHistoryFetched = true;
+          this.isChatHistoryFetched = true
           if (res.data.data.length === 0) {
-            this.chatRoom = new ChatRoom();
+            this.chatRoom = new ChatRoom()
           } else {
             this.chatRoom = res.data.data
           }
@@ -128,13 +128,13 @@ export default Vue.extend({
     async updateRecentContacts (serverMessage) {
       if (serverMessage.senderId === this.sender.id) {
         if (this.recentContacts.length === 0) {
-          await this.getRecentUsers();
+          await this.getRecentUsers()
         } else {
           _.each(this.recentContacts, async (contact, index) => {
             if (serverMessage.senderId === this.sender.id) {
-              await this.setReceiverOnTopOfList(serverMessage.receiverId);
-              this.chatRoom.messages.splice(this.chatRoom.messages.length - 1, 1);
-              this.chatRoom.messages.push(serverMessage);
+              await this.setReceiverOnTopOfList(serverMessage.receiverId)
+              this.chatRoom.messages.splice(this.chatRoom.messages.length - 1, 1)
+              this.chatRoom.messages.push(serverMessage)
               return
             }
             if (index === this.recentContacts.length - 1) {
@@ -148,9 +148,9 @@ export default Vue.extend({
         } else {
           _.each(this.recentContacts, async (contact, index) => {
             if (contact.id === serverMessage.senderId) {
-              await this.setReceiverOnTopOfList(serverMessage.senderId, '');
+              await this.setReceiverOnTopOfList(serverMessage.senderId, '')
               if (this.receiver.id === serverMessage.senderId) {
-                this.chatRoom.messages.push(serverMessage);
+                this.chatRoom.messages.push(serverMessage)
               }
               return
             }
@@ -162,18 +162,19 @@ export default Vue.extend({
       }
     },
     async addAttachment (event) {
-      const type = await UtilityService.getAttachmentFileType(event);
+      const type = await UtilityService.getAttachmentFileType(event)
       if (type) {
         const file = event.target.files[0]
         this.isAttachmentUploadVisible = true
         this.messageObject.attachments = {
-          type, file, objectUrl: URL.createObjectURL(file)
+          type,
+          file,
+          objectUrl: URL.createObjectURL(file)
         }
       }
     },
     scrollToBottom () {
-      document.querySelectorAll('.conversation-body')[0]
-        .lastElementChild.scrollIntoView({ behavior: 'smooth' })
+      UtilityService.scrollToBottomConversation('conversation-container')
     }
   },
   async mounted () {
@@ -182,6 +183,18 @@ export default Vue.extend({
     socketConn.emit('update-user-status', this.sender)
     socketConn.on('message', (message) => {
       this.updateRecentContacts(message)
+      setTimeout(() => {
+        if (message.receiverId === this.sender.id && message.senderId === this.receiver.id) {
+          const element = document.getElementById('conversation-container')
+          if ((element.scrollTop + element.clientHeight) === element.scrollHeight) {
+            const data = {
+              chatRoomId: this.chatRoom._id,
+              message: message
+            }
+            socketConn.emit('messages-read', data)
+          }
+        }
+      }, 300)
     })
     socketConn.on('offline-user', (offlineUserData) => {
       _.each(this.recentContacts, user => {
@@ -197,5 +210,19 @@ export default Vue.extend({
         }
       })
     })
+    socketConn.on('message-seen', (message) => {
+      if (message.senderId === this.sender.id && message.receiverId === this.receiver.id) {
+        this.chatRoom.messages = _.map(this.chatRoom.messages, (msg) => {
+          msg.seen = true
+          return msg
+        })
+      }
+      if (message.receiverId === this.sender.id && message.senderId === this.receiver.id) {
+        this.chatRoom.messages = _.map(this.chatRoom.messages, (msg) => {
+          msg.seen = true
+          return msg
+        })
+      }
+    });
   }
 })
