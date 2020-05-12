@@ -25,17 +25,15 @@ export default {
       }
     },
     scrollToBottom () {
-      const element = document.getElementById('conversation-container')
-      this.scrollHeight = element.scrollHeight
-      element.scrollTop = element.scrollHeight
+      this.$parent.scrollToBottom();
     },
     getMediaUrl (url) {
       return UtilityService.getImageUrl(url)
     },
     handleScroll (event) {
       this.isScrollDownBtnVisible = event.target.scrollHeight - (event.target.scrollTop + event.target.clientHeight) > 200
-      if (this.newMessages) {
-        this.newMessages = event.target.scrollHeight === (event.target.scrollTop + event.target.clientHeight)
+      if (event.target.scrollHeight - (event.target.scrollTop + event.target.clientHeight) === 0) {
+        this.$parent.emitMessageSeen();
       }
     },
     showAttachments (messageId) {
