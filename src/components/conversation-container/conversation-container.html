@@ -1,9 +1,9 @@
 <div class="conversation-container overflow-auto h-full" id="conversation-container" @scroll="handleScroll">
-    <div v-if="newMessages" class="absolute bg-green-600 new-messages rounded-full"
-    @click="$parent.scrollToBottom()">
-        <span></span>
-        <span></span>
-    </div>
+<!--    <div v-if="newMessages" class="absolute bg-green-600 new-messages rounded-full"-->
+<!--    @click="$parent.scrollToBottom()">-->
+<!--        <span></span>-->
+<!--        <span></span>-->
+<!--    </div>-->
     <div class="conversation-body" ref="conversation-body">
         <div :class="{
                 'sender bg-green-200': message.senderId !== receiver.id,

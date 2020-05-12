@@ -53,7 +53,7 @@ export class UtilityService {
     }
   }
 
-  public static scrollToBottomConversation (id: string) {
+  public static scrollToBottom (id: string) {
     const element: HTMLElement | null = document.getElementById(id);
     if (element) {
       element.scrollTop = element?.scrollHeight

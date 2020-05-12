@@ -114,7 +114,8 @@ export default Vue.extend({
           if (res.data.data.length === 0) {
             this.chatRoom = new ChatRoom()
           } else {
-            this.chatRoom = res.data.data
+            this.chatRoom = res.data.data;
+            this.emitMessageSeen(this.chatRoom.messages.slice(-1)[0])
           }
         })
     },
@@ -174,15 +175,13 @@ export default Vue.extend({
       }
     },
     scrollToBottom () {
-      UtilityService.scrollToBottomConversation('conversation-container')
-    }
-  },
-  async mounted () {
-    this.sender = UtilityService.getUserData()
-    await this.getRecentUsers()
-    socketConn.emit('update-user-status', this.sender)
-    socketConn.on('message', (message) => {
-      this.updateRecentContacts(message)
+      UtilityService.scrollToBottom('conversation-container');
+      this.emitMessageSeen()
+    },
+    emitMessageSeen (message) {
+      if (message === undefined) {
+        message = this.chatRoom.messages.slice(-1)[0];
+      }
       setTimeout(() => {
         if (message.receiverId === this.sender.id && message.senderId === this.receiver.id) {
           const element = document.getElementById('conversation-container')
@@ -195,6 +194,15 @@ export default Vue.extend({
           }
         }
       }, 300)
+    }
+  },
+  async mounted () {
+    this.sender = UtilityService.getUserData()
+    await this.getRecentUsers()
+    socketConn.emit('update-user-status', this.sender)
+    socketConn.on('message', (message) => {
+      this.updateRecentContacts(message)
+      this.emitMessageSeen(message)
     })
     socketConn.on('offline-user', (offlineUserData) => {
       _.each(this.recentContacts, user => {
