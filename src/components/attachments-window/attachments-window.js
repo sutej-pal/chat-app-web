@@ -1,4 +1,4 @@
-import TextBox from '../text-box/text-box.vue'
+import TextBox from '@/components/text-box/text-box.vue'
 
 export default {
   props: ['messageObject'],

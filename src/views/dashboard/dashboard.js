@@ -1,8 +1,7 @@
-import Vue from 'vue'
 import { EventBus, Events } from '../../utils/eventBus'
-import AttachmentsViewer from '../../components/attachments-viewer/attachments-viewer.vue'
+import AttachmentsViewer from '@/components/attachments-viewer/attachments-viewer.vue'
 
-export default Vue.extend({
+export default {
   components: {
     'attachments-viewer': AttachmentsViewer
   },
@@ -20,4 +19,4 @@ export default Vue.extend({
       this.propsForAttachmentsViewer.chatRoomId = data.chatRoomId
     })
   }
-})
+};
