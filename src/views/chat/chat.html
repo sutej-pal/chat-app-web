@@ -33,7 +33,7 @@
                     <span class="fa fa-times absolute" @click="searchText = ''"></span>
                 </div>
             </div>
-            <recent-user-list v-if="searchText === ''" :users="users" :receiver="receiver" :searchText="searchText"
+            <recent-user-list v-if="searchText === ''" :users="recentContacts" :receiver="receiver" :searchText="searchText"
                               @newReceiver="selectReceiver"/>
             <all-user-list v-else :searchText="searchText" @newReceiver="selectReceiver"/>
         </div>
@@ -51,7 +51,7 @@
                 </div>
             </router-link>
         </div>
-        <conversation-container :chatRoomId="chatRoom._id" :conversation="chatRoom.messages" :receiver="receiver"
+        <conversation-container v-if="isChatHistoryFetched" :chatRoomId="chatRoom._id" :conversation="chatRoom.messages" :receiver="receiver"
                                 @toggleScrollBottomBtn="(data) => isScrollDownBtnVisible = data"
         ></conversation-container>
         <span @click="scrollToBottom()"

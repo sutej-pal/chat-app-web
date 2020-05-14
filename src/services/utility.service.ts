@@ -1,3 +1,5 @@
+import HttpService from "@/services/http.service";
+
 const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
 const acceptedVideoTypes = ['video/mp4'];
 
@@ -9,6 +11,13 @@ export class UtilityService {
       userData = JSON.parse(temp);
     }
     return userData
+  }
+
+  public static async getUser(userId: string) {
+    return HttpService.get('user/' + userId)
+      .then(res => {
+        return (res && (res.data.data))
+      })
   }
 
   public static async onImageUpload(event: { target: { files: Blob[] } }) {
@@ -41,6 +50,13 @@ export class UtilityService {
       } else {
         return false
       }
+    }
+  }
+
+  public static scrollToBottom (id: string) {
+    const element: HTMLElement | null = document.getElementById(id);
+    if (element) {
+      element.scrollTop = element?.scrollHeight
     }
   }
 }

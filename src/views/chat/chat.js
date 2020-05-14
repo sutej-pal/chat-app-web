@@ -24,7 +24,7 @@ export default Vue.extend({
   data () {
     return {
       searchText: '',
-      users: [],
+      recentContacts: [],
       messageObject: {
         message: '',
         attachments: {
@@ -39,7 +39,8 @@ export default Vue.extend({
       sender: {},
       isAttachmentUploadVisible: false,
       isScrollDownBtnVisible: false,
-      isAttachmentsViewerVisible: false
+      isAttachmentsViewerVisible: false,
+      isChatHistoryFetched: false
     }
   },
   methods: {
@@ -71,7 +72,7 @@ export default Vue.extend({
       }
       this.chatRoom.messages.push(data)
       socketConn.emit('send-message', data)
-      await this.setReceiverOnTopOfList()
+      this.scrollToBottom()
       this.messageObject = {
         message: '',
         attachments: {
@@ -81,20 +82,21 @@ export default Vue.extend({
       }
       this.isAttachmentUploadVisible = false
     },
-    async setReceiverOnTopOfList () {
-      const temp = [...this.users]
-      const index = temp.indexOf(this.receiver)
+    async setReceiverOnTopOfList (userId) {
+      const temp = [...this.recentContacts]
+      const index = temp.findIndex(i => i.id === userId)
       if (index === -1) {
-        await this.getRecentUsers()
-        return
+        const user = await UtilityService.getUser(userId)
+        temp.splice(0, 0, user)
+      } else {
+        temp.splice(index, 1)
+        temp.splice(0, 0, this.recentContacts[index])
       }
-      temp.splice(index, 1)
-      temp.splice(0, 0, this.receiver)
-      this.users = temp
+      this.recentContacts = temp
     },
     async getRecentUsers () {
       HttpService.get('recent-users', true).then(response => {
-        this.users = response.data.data
+        this.recentContacts = response.data.data
         if (response.data.data.length > 0) {
           this.receiver = response.data.data[0]
           this.getChatHistory()
@@ -108,10 +110,12 @@ export default Vue.extend({
       }
       HttpService.post('chat-history-1', data)
         .then(res => {
+          this.isChatHistoryFetched = true
           if (res.data.data.length === 0) {
-            this.chatRoom = new ChatRoom();
+            this.chatRoom = new ChatRoom()
           } else {
-            this.chatRoom = res.data.data
+            this.chatRoom = res.data.data;
+            this.emitMessageSeen(this.chatRoom.messages.slice(-1)[0])
           }
         })
     },
@@ -122,31 +126,74 @@ export default Vue.extend({
     getImageUrl (url) {
       return UtilityService.getImageUrl(url)
     },
-    async updateMessagesArray (serverMessage) {
-      const index = this.chatRoom.messages.length - 1
+    async updateRecentContacts (serverMessage) {
       if (serverMessage.senderId === this.sender.id) {
-        if (index > -1) {
-          this.chatRoom.messages.splice(index, 1)
+        if (this.recentContacts.length === 0) {
+          await this.getRecentUsers()
+        } else {
+          _.each(this.recentContacts, async (contact, index) => {
+            if (serverMessage.senderId === this.sender.id) {
+              await this.setReceiverOnTopOfList(serverMessage.receiverId)
+              this.chatRoom.messages.splice(this.chatRoom.messages.length - 1, 1)
+              this.chatRoom.messages.push(serverMessage)
+              return
+            }
+            if (index === this.recentContacts.length - 1) {
+              await this.setReceiverOnTopOfList(serverMessage.receiverId)
+            }
+          })
         }
-        this.chatRoom.messages.push(serverMessage)
-      } else if (serverMessage.senderId === this.receiver.id) {
-        this.chatRoom.messages.push(serverMessage)
+      } else {
+        if (this.recentContacts.length === 0) {
+          await this.setReceiverOnTopOfList(serverMessage.senderId)
+        } else {
+          _.each(this.recentContacts, async (contact, index) => {
+            if (contact.id === serverMessage.senderId) {
+              await this.setReceiverOnTopOfList(serverMessage.senderId, '')
+              if (this.receiver.id === serverMessage.senderId) {
+                this.chatRoom.messages.push(serverMessage)
+              }
+              return
+            }
+            if (index === this.recentContacts.length - 1) {
+              await this.setReceiverOnTopOfList(serverMessage.senderId)
+            }
+          })
+        }
       }
-      await this.setReceiverOnTopOfList();
     },
     async addAttachment (event) {
-      const type = await UtilityService.getAttachmentFileType(event);
+      const type = await UtilityService.getAttachmentFileType(event)
       if (type) {
         const file = event.target.files[0]
         this.isAttachmentUploadVisible = true
         this.messageObject.attachments = {
-          type, file, objectUrl: URL.createObjectURL(file)
+          type,
+          file,
+          objectUrl: URL.createObjectURL(file)
         }
       }
     },
     scrollToBottom () {
-      document.querySelectorAll('.conversation-body')[0]
-        .lastElementChild.scrollIntoView({ behavior: 'smooth' })
+      UtilityService.scrollToBottom('conversation-container');
+      this.emitMessageSeen()
+    },
+    emitMessageSeen (message) {
+      if (message === undefined) {
+        message = this.chatRoom.messages.slice(-1)[0];
+      }
+      setTimeout(() => {
+        if (message.receiverId === this.sender.id && message.senderId === this.receiver.id) {
+          const element = document.getElementById('conversation-container')
+          if ((element.scrollTop + element.clientHeight) === element.scrollHeight) {
+            const data = {
+              chatRoomId: this.chatRoom._id,
+              message: message
+            }
+            socketConn.emit('messages-read', data)
+          }
+        }
+      }, 300)
     }
   },
   async mounted () {
@@ -154,21 +201,36 @@ export default Vue.extend({
     await this.getRecentUsers()
     socketConn.emit('update-user-status', this.sender)
     socketConn.on('message', (message) => {
-      this.updateMessagesArray(message)
+      this.updateRecentContacts(message)
+      this.emitMessageSeen(message)
     })
     socketConn.on('offline-user', (offlineUserData) => {
-      _.each(this.users, user => {
+      _.each(this.recentContacts, user => {
         if (offlineUserData._id === user.id) {
           user.isActive = offlineUserData.isActive
         }
       })
     })
     socketConn.on('online-user', (onlineUserData) => {
-      _.each(this.users, user => {
+      _.each(this.recentContacts, user => {
         if (onlineUserData.id === user.id) {
           user.isActive = true
         }
       })
     })
+    socketConn.on('message-seen', (message) => {
+      if (message.senderId === this.sender.id && message.receiverId === this.receiver.id) {
+        this.chatRoom.messages = _.map(this.chatRoom.messages, (msg) => {
+          msg.seen = true
+          return msg
+        })
+      }
+      if (message.receiverId === this.sender.id && message.senderId === this.receiver.id) {
+        this.chatRoom.messages = _.map(this.chatRoom.messages, (msg) => {
+          msg.seen = true
+          return msg
+        })
+      }
+    });
   }
 })

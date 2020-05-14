@@ -8,7 +8,8 @@ export default {
   data () {
     return {
       scrollHeight: '',
-      isScrollDownBtnVisible: false
+      isScrollDownBtnVisible: false,
+      newMessages: false
     }
   },
   methods: {
@@ -24,31 +25,52 @@ export default {
       }
     },
     scrollToBottom () {
-      const element = document.getElementById('conversation-container')
-      this.scrollHeight = element.scrollHeight
-      element.scrollTop = element.scrollHeight
+      this.$parent.scrollToBottom();
     },
     getMediaUrl (url) {
       return UtilityService.getImageUrl(url)
     },
     handleScroll (event) {
       this.isScrollDownBtnVisible = event.target.scrollHeight - (event.target.scrollTop + event.target.clientHeight) > 200
+      if (event.target.scrollHeight - (event.target.scrollTop + event.target.clientHeight) === 0) {
+        this.$parent.emitMessageSeen();
+      }
     },
     showAttachments (messageId) {
       const object = {
         messageId,
         chatRoomId: this.chatRoomId
       }
-      EventBus.$emit(Events.enableAttachmentsViewer, object);
+      EventBus.$emit(Events.enableAttachmentsViewer, object)
+    },
+    showNewMessageIcon() {
+      const ct = document.getElementById('conversation-container')
+      if ((ct.scrollHeight - (ct.scrollTop + ct.clientHeight)) > 200) {
+        this.newMessages = true
+      } else {
+        this.scrollToBottom()
+      }
     }
   },
   mounted () {
+    console.log('mounted')
     this.scrollToBottom()
   },
   updated () {
-    this.scrollToBottom()
+    console.log('updated')
+    const ct = document.getElementById('conversation-container')
+    if ((ct.scrollHeight - (ct.scrollTop + ct.clientHeight)) > 200) {
+      this.newMessages = true
+    } else {
+      this.scrollToBottom()
+    }
   },
   watch: {
+    // conversation (newValue, oldValue) {
+    //   console.log('newValue', this.conversation);
+    //   console.log('oldValue', oldValue);
+    //   this.showNewMessageIcon()
+    // },
     isScrollDownBtnVisible (newValue) {
       this.$emit('toggleScrollBottomBtn', newValue)
     }
