@@ -47,18 +47,16 @@ export default class HttpService {
   }
 
   private static async hitApi(request = {}) {
-    try {
-      return axios(request)
-        .then((res) => {
-          return res
-        }).catch((err) => {
-          console.log('err', err.response.data);
-          if (err && err.response.data && err.response.data.message) {
-            Vue.toasted.error(err.response.data.message, {duration: 5000});
-          }
-        })
-    } catch (e) {
-      console.log('Error', e)
-    }
+    return axios(request)
+      .then((res) => {
+        return res
+      }).catch((err) => {
+        console.log('err', err);
+        if (err && err.response && err.response.status && err.response.data.message) {
+          Vue.toasted.error(err.response.data.message, { duration: 5000 });
+        } else {
+          Vue.toasted.error('Network Error', { duration: 5000 });
+        }
+      });
   }
 }
