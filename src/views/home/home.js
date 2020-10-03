@@ -2,7 +2,7 @@ import Vue from 'vue'
 import _ from 'underscore'
 import io from 'socket.io-client'
 import HttpService from '../../services/http.service.ts'
-import UtilityService from '../../services/utility.service.ts'
+import { UtilityService } from '../../services/utility.service.ts'
 
 export default Vue.extend({
   data() {

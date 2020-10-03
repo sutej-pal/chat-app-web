@@ -8,10 +8,11 @@ import Toasted from 'vue-toasted';
 
 Vue.use(Toasted,
   {position: "top-right", duration: 2000, keepOnHover: true}
-  );
+);
 
 Vue.config.productionTip = false;
 
+// @ts-ignore
 new Vue({
   router,
   store,
